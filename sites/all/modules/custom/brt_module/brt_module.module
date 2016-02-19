@@ -1,0 +1,244 @@
+<?php
+DEFINE('BRT_MODULE_PATH',drupal_get_path('module','brt_module'));
+require_once('themes/theme.inc');
+/**
+ * Implement hook_ctools_plugin_directory().
+ */
+function brt_module_form_alter(&$form, &$form_state, $form_id){
+    if($form_id == 'block_admin_configure' || $form_id == "brt_block_configure_form" || $form_id == "brt_block_add_form"){
+        include_once(BRT_MODULE_PATH.'/inc/form.inc');
+        global $base_url;
+        drupal_add_js(array('moduleDir'=> $base_url .'/'.BRT_MODULE_PATH),'setting');
+        // Add media browser js
+        static $included;
+        if ($included) {
+            return;
+        }
+        $included = TRUE;
+        module_load_include('inc', 'media', 'includes/media.browser');
+        $javascript = media_browser_js();
+        foreach ($javascript as $key => $definitions) {
+            foreach ($definitions as $definition) {
+                $function = 'drupal_add_' . $key;
+                call_user_func_array($function, $definition);
+            }
+        }
+        // Add wysiwyg-specific settings.
+        $settings = array('wysiwyg_allowed_attributes' => variable_get('media__wysiwyg_allowed_attributes', array('height', 'width', 'hspace', 'vspace', 'border', 'align', 'style', 'class', 'id', 'usemap', 'data-picture-group', 'data-picture-align')));
+        drupal_add_js(array('media' => $settings), 'setting');
+
+        drupal_add_library('system', 'ui.slider');
+        drupal_add_library('system', 'ui.tabs');
+        //drupal_add_library('system', 'ui.dialog');
+        drupal_add_library('system', 'ui.sortable');
+
+        if($form_id != 'brt_block_configure_form' && $form_id != 'brt_block_add_form') {
+            drupal_add_css(BRT_MODULE_PATH . '/assets/css/spectrum.css');
+            drupal_add_css(BRT_MODULE_PATH . '/assets/css/admin.css');
+            drupal_add_js(BRT_MODULE_PATH . '/assets/js/admin.js');
+            drupal_add_js(BRT_MODULE_PATH . '/assets/js/spectrum.js');
+        }
+
+        if(isset($form['delta']['#value'])) {
+            $delta = $form['delta']['#value'];
+        } else {
+            $delta = $form['delta']['#default_value'];
+        }
+        $variable_settings = variable_get($delta.'_block_settings','');
+        $settings = unserialize($variable_settings);
+        $form['settings']['block_html_id'] = array(
+            '#type'     => 'textfield',
+            '#title'    => t('Block Html Id'),
+            '#description' => t('Unique block id, using for menu scrolling'),
+            '#default_value' => isset($settings['block_html_id']) ? $settings['block_html_id'] : '',
+            '#weight'       => -10
+        );
+        $form['settings']['block_html_classes_wrapper'] = array(
+            '#type'     => 'textfield',
+            '#title'    => t('Block Html Classes Wrapper'),
+            '#description' => t('Html Classes wrap this block'),
+            '#default_value' => isset($settings['block_html_classes_wrapper']) ? $settings['block_html_classes_wrapper'] : '',
+            '#weight'       => -9
+        );
+        $form['settings']['block_html_classes'] = array(
+            '#type'     => 'textfield',
+            '#title'    => t('Block Content Html Classes'),
+            '#description' => t('Html Classes wrap this block content'),
+            '#default_value' => isset($settings['block_html_classes']) ? $settings['block_html_classes'] : '',
+            '#weight'       => -8
+        );
+        $form['settings']['title']['#weight'] = -7;
+
+        $form['settings']['block_detail'] = array(
+            '#type'     => 'textarea',
+            '#title'    => t('Block Detail'),
+            '#description' => t('Some Description display after title'),
+            '#default_value' => isset($settings['block_detail']) ? $settings['block_detail'] : '',
+            '#weight'       => -7
+        );
+        $form['settings']['title_style'] = array(
+            '#type'     => 'select',
+            '#options'  => array(
+                'style_1'  => t('H2 Style 1'),
+                'style_2'  => t('H2 Style 2'),
+            ),
+            '#title'        => t('Heading Style'),
+            '#default_value'    => isset($settings['title_style']) ? $settings['title_style'] : '',
+            '#weight'   =>  -6,
+        );
+
+        $form['settings']['animation_settings'] = array(
+            '#type' => 'fieldset',
+            '#title'    => 'Animation Settings',
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+            '#weight'       => -5
+        );
+        $form['settings']['animation_settings']['enable_animation'] = array(
+            '#type' => 'checkbox',
+            '#title'    => t('Enable Animation'),
+            '#description'  => '',
+            '#default_value'    => isset($settings['enable_animation']) ? $settings['enable_animation'] : ''
+        );
+        $form['settings']['animation_settings']['animation_wrapper'] = array(
+            '#type'	=> 'container',
+            '#states'	=> array(
+                "visible"   => array(
+                    ':input[name="enable_animation"]' => array('checked' => TRUE) ,
+                )
+            )
+        );
+        $animation = array('bounce','flash','pulse','rubberBand','shake','swing','tada','wobble','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig','flip','flipInX','flipInY','lightSpeedIn','rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight','slideInDown','slideInLeft','slideInRight','slideInUp','hinge','rollIn','zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp');
+        $array_animation = array();
+        foreach($animation as $key => $value) {
+            $array_animation[$value] = $value;
+        }
+        $form['settings']['animation_settings']['animation_wrapper']['animation_type'] = array(
+            '#type'     => 'select',
+            '#title'    => 'Animation Type',
+            '#options'  => $array_animation,
+            '#description'  => '',
+            '#default_value'    => isset($settings['animation_type']) ? $settings['animation_type'] : ''
+        );
+        $form['settings']['animation_settings']['animation_wrapper']['animation_delay'] = array(
+            '#type' => 'textfield',
+            '#title'    => t('Animation Delay'),
+            '#description'  => '',
+            '#default_value'    => isset($settings['animation_delay']) ? $settings['animation_delay'] : 600,
+            '#field_suffix' => ' (ms)',
+            '#max_length'   => 5,
+            '#size'         => 6,
+            '#element_validate'     => array('element_validate_integer_positive')
+        );
+
+        $form['settings']['animation_settings']['animation_wrapper']['animation_duration'] = array(
+            '#type' => 'textfield',
+            '#title'    => t('Animation Duration'),
+            '#description'  => '',
+            '#default_value'    => isset($settings['animation_duration']) ? $settings['animation_duration'] : 600,
+            '#field_suffix' => ' (ms)',
+            '#max_length'   => 5,
+            '#size'         => 6,
+            '#element_validate'     => array('element_validate_integer_positive')
+        );
+        /*---------------------background--------------------*/
+        $form['block_background'] = array(
+            '#type'     => 'fieldset',
+            '#title'    => t('Block Background'),
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+            '#weight'       => -2,
+        );
+        $form['block_background']['block_enable_bg'] = array(
+            '#type'     => 'checkbox',
+            '#title'    => 'Enable Block Background',
+            '#default_value'    => isset($settings['block_enable_bg']) ? $settings['block_enable_bg'] : 0,
+        );
+
+        $form['block_background']['block_bg_wrapper'] = array(
+            '#type'     => 'container',
+            '#states'   => array(
+                'visible'   => array(
+                    ':input[name="block_enable_bg"]' => array('checked' => TRUE)
+                )
+            )
+        );
+        _brt_module_build_form_background_settings($form['block_background']['block_bg_wrapper'],'block_bg','Block Background',$settings);
+
+        array_unshift($form['#submit'], '_unikue_block_config_form_submit_alter');
+    }
+    return $form;
+}
+function _unikue_block_config_form_submit_alter($form,&$form_state){
+    $delta = $form_state['values']['delta'];
+    $serialize = serialize($form_state['values']);
+    variable_set($delta.'_block_settings',$serialize);
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function brt_module_theme_registry_alter(&$theme_registry) {
+    global $base_url;
+    // Override the default block.tpl.php with our own.
+    if (isset($theme_registry['block'])) {
+        ;
+    }
+}
+
+/**
+ * @param $css
+ * Hook css alter
+ */
+function brt_module_css_alter(&$css) {
+    //Was able to unset all of these
+    /* unset($css[drupal_get_path('module','system')        .'/system.base.css']);
+     unset($css[drupal_get_path('module','toolbar')        .'/toolbar.css']);
+     unset($css[drupal_get_path('module','system')        .'/system.messages.css']);
+     unset($css[drupal_get_path('module','system')        .'/system.theme.css']);
+     unset($css[drupal_get_path('module','overlay')        .'/overlay-parent.css']);
+     unset($css[drupal_get_path('module','comment')        .'/comment.css']);
+     unset($css[drupal_get_path('module','field')        .'/theme/field.css']);
+     unset($css[drupal_get_path('module','node')            .'/node.css']);
+     unset($css[drupal_get_path('module','search')        .'/search.css']);
+     unset($css[drupal_get_path('module','user')            .'/user.css']);
+     unset($css[drupal_get_path('module','shortcut')        .'/shortcut.css']);
+     unset($css[drupal_get_path('module','ctools')        .'/css/ctools.css']);
+     unset($css[drupal_get_path('module','panels')        .'/css/panels.css']);
+     unset($css[drupal_get_path('module','toolbar_hide')    .'/toolbar_hide.css']);*/
+    //Except these last two
+    if(current_path() == "admin/appearance/settings/unique") {
+        //unset($css['misc/ui/jquery.ui.core.css']);
+        //unset($css['misc/ui/jquery.ui.theme.css']);
+        unset($css['misc/ui/jquery.ui.slider.css']);
+        unset($css['misc/ui/jquery.ui.tabs.css']);
+        //unset($css['misc/ui/jquery.ui.dialog.css']);
+        //unset($css['misc/ui/jquery.ui.button.css']);
+    }
+
+}
+/**
+ * Convert a hexa decimal color code to its RGB equivalent
+ *
+ * @param string $hexStr (hexadecimal color value)
+ * @param boolean $returnAsString (if set true, returns the value separated by the separator character. Otherwise returns associative array)
+ * @param string $seperator (to separate RGB values. Applicable only if second parameter is true.)
+ * @return array or string (depending on second parameter. Returns False if invalid hex color value)
+ */
+function convertHex2RGB($hexStr, $returnAsString = false, $seperator = ',') {
+    $hexStr = preg_replace("/[^0-9A-Fa-f]/", '', $hexStr); // Gets a proper hex string
+    $rgbArray = array();
+    if (strlen($hexStr) == 6) { //If a proper hex code, convert using bitwise operation. No overhead... faster
+        $colorVal = hexdec($hexStr);
+        $rgbArray['red'] = 0xFF & ($colorVal >> 0x10);
+        $rgbArray['green'] = 0xFF & ($colorVal >> 0x8);
+        $rgbArray['blue'] = 0xFF & $colorVal;
+    } elseif (strlen($hexStr) == 3) { //if shorthand notation, need some string manipulations
+        $rgbArray['red'] = hexdec(str_repeat(substr($hexStr, 0, 1), 2));
+        $rgbArray['green'] = hexdec(str_repeat(substr($hexStr, 1, 1), 2));
+        $rgbArray['blue'] = hexdec(str_repeat(substr($hexStr, 2, 1), 2));
+    } else {
+        return false; //Invalid hex color code
+    }
+    return $returnAsString ? implode($seperator, $rgbArray) : $rgbArray; // returns the rgb string or the associative array
+}

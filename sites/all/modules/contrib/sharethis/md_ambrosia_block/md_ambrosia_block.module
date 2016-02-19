@@ -1,0 +1,334 @@
+<?php
+/*****************************************************************
+ * md_ambrosia Theme Block Module
+ * author: MegaDrupal
+ * email: info@megadrupal.com
+ * @file
+ * Add new configurations and style for default block in Drupal
+ ****************************************************************/
+DEFINE('MD_AMBROSIA_BLOCK_PATH',drupal_get_path('module','md_ambrosia_block'));
+require_once('themes/theme.inc');
+/**
+ * Hook_form_alter
+ */
+function md_ambrosia_block_form_alter(&$form, &$form_state, $form_id){
+    if($form_id == 'block_admin_configure' || $form_id == 'md_block_add_form' || $form_id == 'md_block_configure_form') {
+        include_once(MD_AMBROSIA_BLOCK_PATH.'/form.inc');
+        global $base_url;
+        drupal_add_js(array('moduleDir'=> $base_url .'/'.MD_AMBROSIA_BLOCK_PATH),'setting');
+        // Add media browser js
+        static $included;
+
+        if ($included) {
+            return;
+        }
+        $included = TRUE;
+        module_load_include('inc', 'media', 'includes/media.browser');
+        $javascript = media_browser_js();
+        foreach ($javascript as $key => $definitions) {
+            foreach ($definitions as $definition) {
+                $function = 'drupal_add_' . $key;
+                call_user_func_array($function, $definition);
+            }
+        }
+        // Add wysiwyg-specific settings.
+        $settings = array('wysiwyg_allowed_attributes' => variable_get('media__wysiwyg_allowed_attributes', array('height', 'width', 'hspace', 'vspace', 'border', 'align', 'style', 'class', 'id', 'usemap', 'data-picture-group', 'data-picture-align')));
+        drupal_add_js(array('media' => $settings), 'setting');
+
+        drupal_add_library('system', 'ui.slider');
+        drupal_add_library('system', 'ui.tabs');
+        //drupal_add_library('system', 'ui.dialog');
+        drupal_add_library('system', 'ui.sortable');
+
+        if($form_id != 'md_block_configure_form' && $form_id != 'md_block_add_form') {
+            drupal_add_css(MD_AMBROSIA_BLOCK_PATH . '/assets/css/spectrum.css');
+            drupal_add_css(MD_AMBROSIA_BLOCK_PATH . '/assets/css/admin.css');
+            drupal_add_js(MD_AMBROSIA_BLOCK_PATH . '/assets/js/admin.js');
+            drupal_add_js(MD_AMBROSIA_BLOCK_PATH . '/assets/js/spectrum.js');
+        }
+
+
+        if(isset($form['delta']['#value'])) {
+            $delta = $form['delta']['#value'];
+        } else {
+            $delta = $form['delta']['#default_value'];
+        }
+        $variable_settings = variable_get($delta.'_block_settings','');
+        $settings = unserialize($variable_settings);
+
+
+        $form['block_html_id'] = array(
+            '#type'     => 'textfield',
+            '#title'    => t('Block Html Id'),
+            '#description' => t('Unique block id, using for menu scrolling'),
+            '#default_value' => isset($settings['block_html_id']) ? $settings['block_html_id'] : '',
+            '#weight'       => -1
+        );
+        $form['block_html_classes'] = array(
+            '#type'     => 'textfield',
+            '#title'    => t('Block Html Classes'),
+            '#description' => t('Html Classes wrap this block'),
+            '#default_value' => isset($settings['block_html_classes']) ? $settings['block_html_classes'] : '',
+            '#weight'       => 0
+        );
+        $form['block_bootstrap_layout'] = array(
+            '#type'     => 'fieldset',
+            '#title'    => 'Block Bootstrap Layout Settings',
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+        );
+        $form['block_bootstrap_layout']['enable_block_bt_layout'] = array(
+            '#type'     => 'checkbox',
+            '#title'        => t('Enable Block Bootstrap Layout'),
+            '#default_value'    => isset($settings['enable_block_bt_layout']) ? $settings['enable_block_bt_layout'] : '',
+        );
+        $form['block_bootstrap_layout']['block_bt_layout_settings'] = array(
+            '#type'	=> 'container',
+            '#states'	=> array(
+                "visible"   => array(
+                    ':input[name="enable_block_bt_layout"]' => array('checked' => TRUE) ,
+                )
+            )
+        );
+        $form['block_bootstrap_layout']['block_bt_layout_settings']['block_bootstrap_container'] = array(
+            '#type'     => 'select',
+            '#title'    => t('Block Bootstrap Container'),
+            '#options'  => array(
+                'none' => 'None',
+                'container' => 'Container',
+                'container-fluid' => 'Container Fluid',
+            ),
+            '#default_value'    => isset($settings['block_bootstrap_container']) ? $settings['block_bootstrap_container'] : '',
+        );
+
+        $form['block_bootstrap_layout']['block_bt_layout_settings']['block_bootstrap_columns'] = array(
+            '#type'     => 'select',
+            '#title'    => t('Block Bootstrap Column Width'),
+            '#options'  => array(
+                'none' =>  'none',
+                'col_1' => 'Width 1 Column',
+                'col_2' => 'Width 2 Columns',
+                'col_3' => 'Width 3 Columns',
+                'col_4' => 'Width 4 Columns',
+                'col_5' => 'Width 5 Columns',
+                'col_6' => 'Width 6 Columns',
+                'col_7' => 'Width 7 Columns',
+                'col_8' => 'Width 8 Columns',
+                'col_9' => 'Width 9 Columns',
+                'col_10' => 'Width 10 Columns',
+                'col_11' => 'Width 11 Columns',
+                'col_12' => 'Width 12 Columns',
+            ),
+            '#default_value'    => isset($settings['block_bootstrap_columns']) ? $settings['block_bootstrap_columns'] : '',
+        );
+        // BLock background
+
+        $form['block_background'] = array(
+            '#type'     => 'fieldset',
+            '#title'    => t('Block Background'),
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+        );
+        $form['block_background']['block_enable_bg'] = array(
+            '#type'     => 'checkbox',
+            '#title'    => 'Enable Block Background',
+            '#default_value'    => isset($settings['block_enable_bg']) ?$settings['block_enable_bg'] : 0,
+        );
+
+        $form['block_background']['block_bg_wrapper'] = array(
+            '#type'     => 'container',
+            '#states'   => array(
+                'visible'   => array(
+                    ':input[name="block_enable_bg"]' => array('checked' => TRUE)
+                )
+            )
+        );
+        _build_form_background_settings($form['block_background']['block_bg_wrapper'],'block_bg','Block Background',$settings);
+
+        $form['title_wrapper'] = array(
+            '#type'     => 'fieldset',
+            '#title'    => 'Title Settings',
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+        );
+        //$form['title_wrapper']['title'] = $form['settings']['title'];
+        //unset($form['settings']['title']);
+        $form['settings']['title']['#weight'] = 1;
+
+        $form['title_wrapper']['block_title_design'] = array(
+            '#type'     => 'fieldset',
+            '#title'    => t('Block Title Style'),
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+        );
+        $form['title_wrapper']['block_title_design']['block_title_style'] = array(
+            '#type'     => 'select',
+            '#options'  => array(
+                'no_style'          => t('No Style'),
+                'normal'            => t('Normal'),
+                'normal_border'     => t('Normal + Border'),
+                'unique'            => t('Unique'),
+            ),
+            '#title'        => t('Title Around Style'),
+            '#default_value'    => isset($settings['block_title_style']) ? $settings['block_title_style'] : '',
+        );
+        $form['title_wrapper']['block_title_design']['no_style'] = array(
+            '#type'     => 'container',
+            '#states'   => array(
+                'visible' => array(
+                    ':input[name="block_title_style"]' => array('value' => 'no_style')
+                )
+            )
+        );
+
+        $form['title_wrapper']['block_title_design']['no_style']['block_title_no_style_text_skin'] = array(
+            '#type'     => 'select',
+            '#options'  => array(
+                'dark'  => t('Dark Text'),
+                'light'  => t('Light Text'),
+            ),
+            '#title'        => t('Title Text Skin'),
+            '#default_value'    => isset($settings['block_title_no_style_text_skin']) ? $settings['block_title_no_style_text_skin'] : '',
+        );
+
+        $form['title_wrapper']['block_title_design']['theme_style'] = array(
+            '#type'     => 'container',
+            '#states'   => array(
+                'invisible' => array(
+                    ':input[name="block_title_style"]' => array('value' => 'no_style')
+                )
+            )
+        );
+        $form['title_wrapper']['block_title_design']['theme_style']['block_title_enable_ribbon'] = array(
+            '#type'     => 'checkbox',
+            '#title'        => t('Enable Ribbon'),
+            '#default_value'    => isset($settings['block_title_enable_ribbon']) ? $settings['block_title_enable_ribbon'] : '',
+        );
+        if(isset($settings['block_title_enable_ribbon']) && $settings['block_title_enable_ribbon'] == 1) {
+            $form['title_wrapper']['block_title_design']['theme_style']['block_title_text_skin'] = array(
+                '#type'     => 'select',
+                '#options'  => array(
+                    'dark'  => t('Dark & White Text'),
+                    'dark_tc'  => t('Dark & Color Ribbon'),
+                    'color'  => t('Color & Black Text'),
+                    'light'  => t('Light & Black Text'),
+                ),
+                '#title'        => t('Title Text Skin'),
+                '#default_value'    => isset($settings['block_title_text_skin']) ? $settings['block_title_text_skin'] : '',
+            );
+        } else {
+            $form['title_wrapper']['block_title_design']['theme_style']['block_title_text_skin'] = array(
+                '#type'     => 'select',
+                '#options'  => array(
+                    'dark'  => t('Dark & White Text'),
+                    'color'  => t('Color & Black Text'),
+                    'light'  => t('Light & Black Text'),
+                ),
+                '#title'        => t('Title Text Skin'),
+                '#default_value'    => isset($settings['block_title_text_skin']) ? $settings['block_title_text_skin'] : '',
+            );
+        }
+
+        $form['title_wrapper']['block_title_design']['block_title_text_transform'] = array(
+            '#type'     => 'select',
+            '#options'  => array(
+                'text-capitalize'  => t('Text Capitalize'),
+                'text-lowercase'  => t('Text Lowercase'),
+                'text-uppercase'  => t('Text Uppercase'),
+            ),
+            '#title'        => t('Text Style'),
+            '#default_value'    => isset($settings['block_title_text_transform']) ? $settings['block_title_text_transform'] : '',
+        );
+        $form['title_wrapper']['block_title_enable_bg'] = array(
+            '#type'     => 'checkbox',
+            '#title'    => 'Enable Title Background',
+            '#default_value'    => isset($settings['block_title_enable_bg']) ?$settings['block_title_enable_bg'] : 0,
+        );
+
+        $form['title_wrapper']['block_title_bg_wrapper'] = array(
+            '#type'     => 'container',
+            '#states'   => array(
+                'visible'   => array(
+                    ':input[name="block_title_enable_bg"]' => array('checked' => TRUE)
+                )
+            )
+        );
+        $form['title_wrapper']['block_title_bg_wrapper']['block_title_background'] = array(
+            '#type'     => 'fieldset',
+            '#title'    => t('Block Title Background'),
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE,
+        );
+
+        _build_form_background_settings($form['title_wrapper']['block_title_bg_wrapper']['block_title_background'],'block_tt_bg','Block Title',$settings);
+
+        $form['animation_settings'] = array(
+            '#type' => 'fieldset',
+            '#title'    => 'Animation Settings',
+            '#collapsible'  => TRUE,
+            '#collapsed'    => FALSE
+        );
+        $form['animation_settings']['enable_animation'] = array(
+            '#type' => 'checkbox',
+            '#title'    => t('Enable Animation'),
+            '#description'  => '',
+            '#default_value'    => isset($settings['enable_animation']) ? $settings['enable_animation'] : ''
+        );
+        $form['animation_settings']['animation_wrapper'] = array(
+            '#type'	=> 'container',
+            '#states'	=> array(
+                "visible"   => array(
+                    ':input[name="enable_animation"]' => array('checked' => TRUE) ,
+                )
+            )
+        );
+        $animation = array('bounce','flash','pulse','rubberBand','shake','swing','tada','wobble','bounceIn','bounceInDown','bounceInLeft','bounceInRight','bounceInUp','fadeIn','fadeInDown','fadeInDownBig','fadeInLeft','fadeInLeftBig','fadeInRight','fadeInRightBig','fadeInUp','fadeInUpBig','flip','flipInX','flipInY','lightSpeedIn','rotateIn','rotateInDownLeft','rotateInDownRight','rotateInUpLeft','rotateInUpRight','slideInDown','slideInLeft','slideInRight','slideInUp','hinge','rollIn','zoomIn','zoomInDown','zoomInLeft','zoomInRight','zoomInUp');
+        $array_animation = array();
+        foreach($animation as $key => $value) {
+            $array_animation[$value] = $value;
+        }
+        $form['animation_settings']['animation_wrapper']['animation_type'] = array(
+            '#type'     => 'select',
+            '#title'    => 'Animation Type',
+            '#options'  => $array_animation,
+            '#description'  => '',
+            '#default_value'    => isset($settings['animation_type']) ? $settings['animation_type'] : ''
+        );
+        $form['animation_settings']['animation_wrapper']['animation_delay'] = array(
+            '#type' => 'textfield',
+            '#title'    => t('Animation Delay'),
+            '#description'  => '',
+            '#default_value'    => isset($settings['animation_delay']) ? $settings['animation_delay'] : 600,
+            '#field_suffix' => ' (ms)',
+            '#max_length'   => 5,
+            '#size'         => 6,
+            '#element_validate'     => array('element_validate_integer_positive')
+        );
+        $form['animation_settings']['animation_wrapper']['animation_duration'] = array(
+            '#type' => 'textfield',
+            '#title'    => t('Animation Duration'),
+            '#description'  => '',
+            '#default_value'    => isset($settings['animation_duration']) ? $settings['animation_duration'] : 600,
+            '#field_suffix' => ' (ms)',
+            '#max_length'   => 5,
+            '#size'         => 6,
+            '#element_validate'     => array('element_validate_integer_positive')
+        );
+
+        $form['regions']['#weight'] = 3;
+        $form['visibility_title']['#weight'] = 4;
+        $form['visibility']['#weight'] = 5;
+
+        array_unshift($form['#submit'], '_md_ambrosia_block_config_form_submit_alter');
+    }
+    return $form;
+}
+/**
+ * Submit block configure form alter
+ */
+function _md_ambrosia_block_config_form_submit_alter($form,&$form_state){
+    $delta = $form_state['values']['delta'];
+    $serialize = serialize($form_state['values']);
+    variable_set($delta.'_block_settings',$serialize);
+}
+

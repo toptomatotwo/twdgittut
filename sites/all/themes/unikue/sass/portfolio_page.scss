@@ -1,0 +1,17 @@
+h1.portfolio-page-title, h1.portfolio-page-title:hover {
+	text-align: left;
+	color:#777;
+	margin: 0;
+}
+
+p.website-link a {
+	/* color:$lexWebDevOrange; */
+	color:#ec643e;
+	font-weight: 500;
+	text-decoration: none;
+}
+p.website-link a:hover {
+	color:red;
+	font-weight: 500;
+	text-decoration: underline;
+}

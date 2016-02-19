@@ -1,0 +1,313 @@
+/* Section */
+.section {
+    position: relative;
+    z-index: 3;
+}
+.section-white {
+    background-color: white;
+}
+.section-light {
+    background-color: #f6f6f6;
+}
+.section-dark {
+    background-color: #222b30;
+}
+/* Margin & Padding */
+.mt-20 {
+    margin-top: 20px;
+}
+.mt--20 {
+    margin-top: -20px;
+}
+.mt-30 {
+    margin-top: 30px;
+}
+.mt--30 {
+    margin-top: 30px;
+}
+.mt-40 {
+    margin-top: 40px;
+}
+.mt--40 {
+    margin-top: -40px;
+}
+.mt-50 {
+    margin-top: 50px;
+}
+.mt--50 {
+    margin-top: -50px;
+}
+.mt-60 {
+    margin-top: 60px;
+}
+.mt--60 {
+    margin-top: -60px;
+}
+.mb-20 {
+    margin-bottom: 20px;
+}
+.mb--20 {
+    margin-bottom: -20px;
+}
+.mb-30 {
+    margin-bottom: 30px;
+}
+.mb--30 {
+    margin-bottom: -30px;
+}
+.mb-40 {
+    margin-bottom: 40px;
+}
+.mb--40 {
+    margin-bottom: -40px;
+}
+.mb-50 {
+    margin-bottom: 50px;
+}
+.mb--50 {
+    margin-bottom: -50px;
+}
+.mb-60 {
+    margin-bottom: 60px;
+}
+.mb--60 {
+    margin-bottom: -60px;
+}
+.pt-20 {
+    padding-top: 20px;
+}
+.pt--20 {
+    padding-top: -20px;
+}
+.pt-30 {
+    padding-top: 30px;
+}
+.pt--30 {
+    padding-top: 30px;
+}
+.pt-40 {
+    padding-top: 40px;
+}
+.pt--40 {
+    padding-top: -40px;
+}
+.pt-50 {
+    padding-top: 50px;
+}
+.pt--50 {
+    padding-top: -50px;
+}
+.pt-60 {
+    padding-top: 60px;
+}
+.pt--60 {
+    padding-top: -60px;
+}
+.pt-100 {
+    padding-top: 100px;
+}
+.pb-20 {
+    padding-bottom: 20px;
+}
+.pb--20 {
+    padding-bottom: -20px;
+}
+.pb-30 {
+    padding-bottom: 30px;
+}
+.pb--30 {
+    padding-bottom: -30px;
+}
+.pb-40 {
+    padding-bottom: 40px;
+}
+.pb--40 {
+    padding-bottom: -40px;
+}
+.pb-50 {
+    padding-bottom: 50px;
+}
+.pb--50 {
+    padding-bottom: -50px;
+}
+.pb-60 {
+    padding-bottom: 60px;
+}
+.pb--60 {
+    padding-bottom: -60px;
+}
+.pb-100 {
+    padding-bottom: 100px;
+}
+.pd-20 {
+    padding: 20px 0;
+}
+.pd-30 {
+    padding: 30px 0;
+}
+.pd-40 {
+    padding: 40px 0;
+}
+.pd-50 {
+    padding: 50px 0;
+}
+.pd-60 {
+    padding: 60px 0;
+}
+.pd-100 {
+    padding: 100px 0;
+}
+.pd-120 {
+    padding: 120px 0;
+}
+.pd-150 {
+    padding: 150px 0;
+}
+.pd-200 {
+    padding: 200px 0;
+}
+
+.mg-20 {
+    margin: 20px 0;
+}
+.mg-30 {
+    margin: 30px 0;
+}
+.mg-40 {
+    margin: 40px 0;
+}
+.mg-50 {
+    margin: 50px 0;
+}
+.mg-60 {
+    margin: 60px 0;
+}
+/* Overflow hidden */
+.overflow-hidden {
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+/* Font-weigth */
+.font-100 {
+    font-weight: 100;
+}
+.font-200 {
+    font-weight: 200;
+}
+.font-300 {
+    font-weight: 300;
+}
+.font-400 {
+    font-weight: 400;
+}
+.font-600 {
+    font-weight: 600;
+}
+.font-700 {
+    font-weight: 700;
+}
+.font-900 {
+    font-weight: 800;
+}
+.font-900 {
+    font-weight: 900;
+}
+/*contact*/
+.view-contact .webform-client-form label{
+    color: #adadad;
+    font-size: 12px;
+    font-weight: 400;
+}
+.view-contact .column-work{
+    margin-top: 33px;
+}
+.mt-mb{
+    top: -80px;
+    bottom: 29px;
+}
+
+/*menu*/
+.menu > li.leaf {
+    display: inline-block;
+    float: left;
+    margin: 0;
+    padding: 0;
+    
+}
+.container-single .column-gallery{
+    margin-bottom: 10px;
+}
+.container-single .column-gallery img{
+    height: 207px;
+}
+.container-single iframe{
+    width: 100%; !important;
+    height: 349px;
+    vertical-align: middle;
+    display: inline-block;
+}
+body.admin-menu .navbar {
+    top:29px;
+}
+body.toolbar .navbar {
+    top:30px;
+}
+body.toolbar.toolbar-drawer .navbar {
+    top: 65px;
+}
+.node-portfolio .w-col-8 .video-div:first-child{
+    margin-top: 0px;
+}
+.tabs.primary {
+    margin: 30px 0;
+}
+.tabs.primary > li {
+    padding-left: 0;
+    min-height: 30px;
+    line-height: 30px;
+    height: auto;
+}
+ul.primary {
+    padding-left: 0;
+    border-bottom: 1px solid #ddd;
+}
+.tabs.primary li a.active {
+    color: #555;
+    cursor: default;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+.tabs.primary li a {
+    margin-right: 2px;
+    border: 1px solid transparent;
+    padding: 5px 15px;
+}
+#main-wrapper {
+    position: relative;
+    z-index: 3;
+    background: white;
+}
+.w-nav-overlay .w--nav-menu-open {
+    padding: 0;
+}
+.w-nav-menu.w--nav-menu-open li {
+    width: 100%;
+}
+@media (max-width: 991px) {
+    .nav-link {
+        color: white !important;
+    }
+}
+body.not-front #messages {
+    margin-top: 120px;
+}
+.subtext-portfolio p {
+    color: #a2a9b0;
+    font-size: 20px;
+    font-weight: 300;
+    text-transform: uppercase;
+    text-align: inherit;
+    margin: 0;
+    padding: 0;
+}

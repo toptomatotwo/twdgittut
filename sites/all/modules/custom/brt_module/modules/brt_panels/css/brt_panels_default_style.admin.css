@@ -1,0 +1,3 @@
+.mdp-pane-inline .form-item {display: inline-block;}
+.ui-widget-overlay.ui-front {z-index: 1001;}
+.ui-front.media-wrapper {z-index: 9999;}

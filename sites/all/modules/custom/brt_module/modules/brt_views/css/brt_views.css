@@ -1,0 +1,84 @@
+.wrap-sort {
+	display: table;
+	width: 100%;
+	vertical-align: middle;
+}
+.wrap-sort > div {
+	display: table-cell;
+	width: 100%;
+	vertical-align: middle;
+	overflow: auto;
+}
+.wrap-sort  * {
+	vertical-align: middle;
+}
+.form-wrapper h3 {
+	display: none;
+}
+.form-item-style-options-wrap-sort-animate {
+	width: 180px;
+	display: inline-block;
+}
+.form-item-style-options-wrap-sort-animate select {
+	height: 300px;
+}
+.wrap-add-click {
+	width: 110px;
+	text-align: center;
+	display: inline-block;
+}
+.sort-animate {
+	width: 200px;
+	height: 300px;
+	overflow-x: auto;
+	display: inline-block;
+	border: 1px solid #1a1a1a;
+}
+
+.sort-animate .ui-sortable {
+	list-style: none;
+	margin: 0;
+	display: block;
+}
+.sort-animate .ui-sortable li {
+	padding: 5px 10px 5px 20px;
+	background: #ededed;
+	border-bottom: 1px solid #f0f0f0;
+	margin-bottom: 1px;
+	overflow: auto;
+	cursor: move;
+	position: relative;
+}
+.sort-animate .ui-sortable li:before {
+	position: absolute;
+	top: 9px;
+	left: 3px;
+	content: '\f047';
+	color: #999;
+ 	display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+}
+.sort-animate .ui-sortable li .animate-value {
+	float: left;
+}
+.sort-animate .ui-sortable li .animate-value i {
+	display: none;
+}
+.sort-animate .ui-sortable li .delete-animate {
+	float: right;
+	cursor: pointer;
+}
+
+ .sort-animate .ui-sortable li .delete-animate:after { 
+ 	content: '\f00d';
+ 	display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+ }
+
+

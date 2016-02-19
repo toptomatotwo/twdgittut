@@ -1,0 +1,32 @@
+
+.panel-two-sidebar-left {
+     /*  overflow: hidden;  */
+ }
+
+.panel-two-sidebar-left .panel-sidebar-1 {
+    float: left;
+    width: 25%;
+}
+.panel-two-sidebar-left .panel-sidebar-2 {
+    float: left;
+    width: 25%;
+}
+
+.panel-two-sidebar-left .panel-sidebar .inside {
+    margin: 0 .5em 1em 0;
+}
+.panel-two-sidebar-left .panel-content .inside {
+    margin: 0 .5em 1em .5em;
+}
+
+.panel-two-sidebar-left .panel-content {
+    float: right;
+    width: 50%;
+}
+.panel-two-sidebar-left .panel-content .inside {
+    margin: 0 0 1em .5em;
+}
+
+.panel-two-sidebar-left .panel-separator {
+    margin: 0 0 1em 0;
+}

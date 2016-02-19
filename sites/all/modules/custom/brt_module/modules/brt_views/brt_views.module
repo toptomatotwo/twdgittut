@@ -1,0 +1,132 @@
+<?php
+/**
+ * @file
+ * Bootstrap integration.
+ */
+DEFINE('MODULE_PATH',drupal_get_path('module','brt_views'));
+/**
+ * Implements hook_views_api().
+ */
+function brt_views_views_api() {
+  return array("api" => "3.0");
+}
+
+/**
+ * Implements hook_views_plugins_alter().
+ */
+function brt_views_views_plugins_alter(&$plugins) {
+
+}
+/**
+ * Implements hook_form_alter().
+ */
+function brt_views_form_alter(&$form, &$form_state, $form_id) {
+    if($form_id == 'views_ui_config_item_form') {
+        $form['options']['field_animate'] = array(
+            '#type'         => 'fieldset',
+            '#title'        => 'Test',
+            '#collapsible'  => TRUE,
+            '#collapsed'    => TRUE
+        );
+        $form['options']['field_animate']['animation'] = array(
+            '#type'         => 'select',
+            '#title'        => 'Choose animation',
+            '#options'      => array(
+                'fadeIn'    => 'Fade In',
+                'rollIn'    => 'Roll In',
+            ),
+        );
+        $form['buttons']['submit']['#submit'][] = 'brt_views_form_alter_field_settings_submit';
+        $form['#submit'][] = 'brt_views_form_alter_field_settings_submit';
+
+    }
+}
+function brt_views_form_alter_field_settings_submit($form, &$form_state) {
+
+}
+function brt_views_preprocess_page(&$vars) {
+    drupal_add_css(MODULE_PATH.'/css/brt_animate.css');
+    drupal_add_js(MODULE_PATH.'/js/wow.min.js');
+    drupal_add_js(MODULE_PATH.'/js/front.js');
+}
+
+// We need to implement our own tpls for items being return via the load-more pager.
+
+/**
+ * Implementation of hook_theme().
+ */
+function brt_views_theme() {
+    return array(
+        'brt_views_blog_pager' => array(
+            'variables' => array('tags' => array(), 'quantity' => 10, 'element' => 0, 'parameters' => array()),
+            'pattern' => 'brt_views_blog_pager__',
+        ),
+    );
+}
+/**
+ * @param $vars
+ * @return array
+ * Theme solveto Blog Pager
+ */
+
+function theme_brt_views_blog_pager($vars) {
+    global $pager_page_array, $pager_total;
+    $tags = $vars['tags'];
+    $element = $vars['element'];
+    $parameters = $vars['parameters'];
+
+    // current is the page we are currently paged to
+    $pager_current = $pager_page_array[$element] + 1;
+    // max is the maximum page number
+    $pager_max = $pager_total[$element];
+    // End of marker calculations.
+
+    if ($pager_total[$element] > 1) {
+        $li_previous = theme('pager_previous',
+            array(
+                'text' => '<i class="fa fa-long-arrow-left"></i>Older posts',
+                'element' => $element,
+                'interval' => 1,
+                'parameters' => $parameters,
+                'attributes'    => array('class' => 'button button-icon-left', 'type' => 'blog')
+            )
+        );
+
+        $li_next = theme('pager_next',
+            array(
+                'text' => 'Newer posts<i class="fa fa-long-arrow-right"></i>',
+                'element' => $element,
+                'interval' => 1,
+                'parameters' => $parameters,
+                'attributes'    => array('class' => 'button button-icon-right' , 'type'  => 'blog')
+            )
+        );
+
+        $items[] = array(
+            'class' => array('col-lg-6 col-md-6'),
+            'data' => $li_previous,
+        );
+
+        $items[] = array(
+            'class' => array('pager-current'),
+            'data' => t('@current of @max', array('@current' => $pager_current, '@max' => $pager_max)),
+        );
+
+        $items[] = array(
+            'class' => array('col-lg-6 col-md-6'),
+            'data' => $li_next,
+        );
+        /*$output = array(
+            'prev'  =>  $li_previous,
+            'next'  =>  $li_next,
+        );*/
+        if(current_path() == "blog-small") {
+            $output = '<div class="col-lg-6 col-md-6">'.$li_previous.'</div>'.'<div class="col-lg-6 col-md-6">'.$li_next.'</div>';
+        } else {
+            $output = $li_previous.$li_next;
+        }
+
+        return $output;
+    }
+
+}

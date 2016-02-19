@@ -1,0 +1,7 @@
+name = BRT Panel Module
+description = Integrate Panel module into Berathemes
+core = 7.x
+version = 7.x-1.0
+dependencies[] = panels
+
+package = BRT

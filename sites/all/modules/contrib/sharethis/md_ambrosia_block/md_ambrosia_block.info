@@ -1,0 +1,9 @@
+name = MD Ambrosia Block
+description = Add some block configurations and styles
+core = 7.x
+package = MD Ambrosia Theme
+dependencies[] = block
+version = "7.x-1.0"
+core = "7.x"
+project = "md_ambrosia_block"
+

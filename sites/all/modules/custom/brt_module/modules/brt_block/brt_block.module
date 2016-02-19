@@ -1,0 +1,763 @@
+<?php
+/**
+ * This module use for writing custom block types.
+ * New data need defined in brt_block.inc
+ */
+
+/**
+ * Implements hook_menu().
+ */
+DEFINE('BRT_BLOCK_PATH', drupal_get_path('module', 'brt_block'));
+@require_once(BRT_BLOCK_PATH.'/brt_block.theme.inc');
+
+function brt_block_menu()
+{
+    $items['admin/structure/block/brt-blocks'] = array(
+        'title' => 'Add Custom Blocks',
+        'page callback' => 'brt_block_list',
+        'access arguments' => array('administer blocks'),
+        'type' => MENU_LOCAL_ACTION,
+    );
+
+    $items['admin/structure/block/brt-blocks/add/%'] = array(
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('brt_block_add_form', 5),
+        'access arguments' => array('administer blocks'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['admin/structure/block/brt-blocks/delete/%'] = array(
+        'title' => 'Delete block',
+        'page callback' => 'brt_block_delete',
+        'page arguments' => array(5),
+        'access arguments' => array('administer blocks'),
+        'type' => MENU_CALLBACK,
+    );
+
+    $items['tweet'] = array(
+        'title' => t('Twitter Feed'),
+        'description' => t('Display lastest tweet of twitter account'),
+        'page callback' => 'tweet_content',
+        'access callback' => true,
+        'access arguments' => array('access content'),
+    );
+
+    return $items;
+}
+
+function brt_block_menu_alter(&$items)
+{
+    $items['admin/structure/block/manage/brt_block/%/configure']['page callback'] = 'drupal_get_form';
+    $items['admin/structure/block/manage/brt_block/%/configure']['page arguments'] = array('brt_block_configure_form', 5);
+    $items['admin/structure/block/manage/brt_block/%/configure']['access arguments'] = array('administer blocks');
+}
+
+function brt_block_list()
+{
+    module_load_include('inc','brt_block','brt_block.func');
+    module_load_include('inc','brt_block','brt_block');
+    drupal_set_title(t("BRT Block : List Custom Blocks"));
+    $items['items'] = array();
+    $brt_data = theme('brt_block_list', array('brt_datas' => brt_block_data(), 'brt_render' => ''));
+    $brt_link = url('admin/structure/block/brt-blocks/');
+    return $brt_data;
+}
+
+function brt_block_add_form($form, &$form_state, $brt_type = '')
+{
+    module_load_include('inc','brt_block','brt_block.func');
+    module_load_include('inc','brt_block','brt_block');
+    global $base_url;
+    drupal_add_js(array('moduleDir' => $base_url .'/'. BRT_BLOCK_PATH),'setting');
+    drupal_add_css(BRT_BLOCK_PATH.'/assets/css/brt_block.css');
+    drupal_add_css(BRT_BLOCK_PATH.'/assets/css/spectrum.css');
+    drupal_add_js(BRT_BLOCK_PATH.'/assets/js/spectrum.js');
+    drupal_add_js(BRT_BLOCK_PATH.'/assets/js/unlimited-settings.js');
+    drupal_add_js(BRT_BLOCK_PATH.'/assets/js/brt_block.js');
+
+    drupal_add_library('system', 'ui.mouse');
+    drupal_add_library('system', 'ui.slider');
+    drupal_add_library('system', 'ui.tabs');
+    drupal_add_library('system', 'ui.dialog');
+
+    drupal_add_library('system', 'ui.sortable');
+    drupal_add_library('system', 'ui.slider');
+
+
+    // Add media browser js
+    static $included;
+
+    if ($included) {
+        return;
+    }
+    $included = TRUE;
+    module_load_include('inc', 'media', 'includes/media.browser');
+    $javascript = media_browser_js();
+    foreach ($javascript as $key => $definitions) {
+        foreach ($definitions as $definition) {
+            $function = 'drupal_add_' . $key;
+            call_user_func_array($function, $definition);
+        }
+    }
+// Add wysiwyg-specific settings.
+    $settings = array('wysiwyg_allowed_attributes' => variable_get('media__wysiwyg_allowed_attributes', array('height', 'width', 'hspace', 'vspace', 'border', 'align', 'style', 'class', 'id', 'usemap', 'data-picture-group', 'data-picture-align')));
+    drupal_add_js(array('media' => $settings), 'setting');
+
+
+
+    module_load_include('inc', 'block', 'block.admin');
+    $brt_datas = brt_block_data();
+
+    $brt_form = array();
+    $brt_form = block_admin_configure($form, $form_state, 'brt_block', NULL);
+    $brt_form['regions']['#weight'] = 50;
+    $brt_form['visibility']['#weight'] = 52;
+    $brt_form['visibility_title']['#weight'] = 51;
+
+    $brt_form['black_link'] = array(
+        '#markup' => l(t('Back list type'), 'admin/structure/block/brt-blocks', array()),
+        '#weight' => -1
+    );
+
+    $brt_data_type = isset($brt_datas[$brt_type]) ? $brt_datas[$brt_type] : null;
+    if ($brt_data_type != null) {
+        drupal_set_title(t("BRT Block : " . $brt_data_type['config']['title']));
+
+
+        $brt_delta = 'test';
+        $brt_form['brt_block_type'] = array(
+            '#type' => 'hidden',
+            '#default_value' => $brt_type
+        );
+        $brt_form['brt_delta'] = array(
+            '#type' => 'hidden',
+            '#default_value' => $brt_delta
+        );
+        $brt_form['delta']['#default_value'] = $brt_delta;
+
+        if (isset($brt_data_type['form'])) {
+            foreach ($brt_data_type['form'] as $key => $value) {
+                $brt_form[$key] = $value;
+                if (isset($value['#type']) && ($value['#type'] == 'media')) {
+                    $brt_form[$key]['#default_value']['fid'] = '';
+                }
+            }
+        }
+    }
+    $brt_form['#submit'][''] = 'brt_block_add_form_submit';
+    return $brt_form;
+}
+
+function brt_block_add_form_validate($form, &$form_state)
+{
+}
+
+function brt_block_add_form_submit($form, &$form_state)
+{
+//  dsm($form_state);
+    form_state_values_clean($form_state);
+    $brt_datas = $form_state['values'];
+
+    $brt_block_query = db_query('SELECT bid FROM {block} ORDER BY bid DESC LIMIT 1');
+    $brt_block_result = $brt_block_query->fetchObject();
+    $brt_bid = $brt_block_result->bid + 1;
+    $brt_delta = 'brt__' . $brt_datas['brt_block_type'] . '__' . $brt_bid;
+    $brt_datas['brt_delta'] = $brt_delta;
+
+    $delta = $brt_datas['brt_delta'];
+    $brt_datas['delta'] = $delta;
+
+    $query = db_insert('block')->fields(array('visibility', 'pages', 'custom', 'title', 'module', 'theme', 'status', 'weight', 'delta', 'cache'));
+    foreach (list_themes() as $key => $theme) {
+        if ($theme->status) {
+            $query->values(array(
+                'visibility' => (int)$form_state['values']['visibility'],
+                'pages' => trim($form_state['values']['pages']),
+                'custom' => (int)$form_state['values']['custom'],
+                'title' => $form_state['values']['title'],
+                'module' => $form_state['values']['module'],
+                'theme' => $theme->name,
+                'status' => 0,
+                'weight' => 0,
+                'delta' => $delta,
+                'cache' => DRUPAL_NO_CACHE,
+            ));
+        }
+    }
+    $query->execute();
+
+    $query = db_insert('block_role')->fields(array('rid', 'module', 'delta'));
+    foreach (array_filter($form_state['values']['roles']) as $rid) {
+        $query->values(array(
+            'rid' => $rid,
+            'module' => $form_state['values']['module'],
+            'delta' => $delta,
+        ));
+    }
+    $query->execute();
+
+    // Store regions per theme for this block
+    foreach ($form_state['values']['regions'] as $theme => $region) {
+        db_merge('block')
+            ->key(array('theme' => $theme, 'delta' => $delta, 'module' => $form_state['values']['module']))
+            ->fields(array(
+                'region' => ($region == BLOCK_REGION_NONE ? '' : $region),
+                'pages' => trim($form_state['values']['pages']),
+                'status' => (int)($region != BLOCK_REGION_NONE),
+            ))
+            ->execute();
+    }
+
+    variable_set($delta, array('data' => $brt_datas));
+    drupal_set_message(t('BRT Blocks : "' . str_replace('_', ' ', $brt_datas['brt_block_type']) . '" created successfully!'));
+    drupal_goto('admin/structure/block');
+}
+
+function brt_block_configure_form($form, &$form_state, $delta = '')
+{
+    module_load_include('inc','brt_block','brt_block.func');
+    module_load_include('inc','brt_block','brt_block');
+    global $base_url;
+    drupal_add_js(array('moduleDir' => $base_url. '/'.BRT_BLOCK_PATH),'setting');
+    drupal_add_css(BRT_BLOCK_PATH.'/assets/css/brt_block.css');
+    drupal_add_css(BRT_BLOCK_PATH.'/assets/css/spectrum.css');
+    drupal_add_js(BRT_BLOCK_PATH.'/assets/js/spectrum.js');
+    drupal_add_js(BRT_BLOCK_PATH.'/assets/js/unlimited-settings.js');
+    drupal_add_js(BRT_BLOCK_PATH.'/assets/js/brt_block.js');
+
+    drupal_add_library('system', 'ui.mouse');
+    drupal_add_library('system', 'ui.slider');
+    drupal_add_library('system', 'ui.tabs');
+    drupal_add_library('system', 'ui.dialog');
+    drupal_add_library('system', 'ui.sortable');
+    drupal_add_library('system', 'ui.slider');
+
+    // Add media browser js
+    static $included;
+
+    if ($included) {
+        return;
+    }
+    $included = TRUE;
+    module_load_include('inc', 'media', 'includes/media.browser');
+    $javascript = media_browser_js();
+    foreach ($javascript as $key => $definitions) {
+        foreach ($definitions as $definition) {
+            $function = 'drupal_add_' . $key;
+            call_user_func_array($function, $definition);
+        }
+    }
+// Add wysiwyg-specific settings.
+    $settings = array('wysiwyg_allowed_attributes' => variable_get('media__wysiwyg_allowed_attributes', array('height', 'width', 'hspace', 'vspace', 'border', 'align', 'style', 'class', 'id', 'usemap', 'data-picture-group', 'data-picture-align')));
+    drupal_add_js(array('media' => $settings), 'setting');
+
+
+
+    $query = db_query('SELECT * FROM {variable} where name = :md_name', array(':md_name' => $delta));
+    $brt_result = $query->fetchObject();
+
+    module_load_include('inc', 'block', 'block.admin');
+
+    $brt_form = block_admin_configure($form, $form_state, 'brt_block', $delta);
+    $brt_form['regions']['#weight'] = 50;
+    $brt_form['visibility']['#weight'] = 52;
+    $brt_form['visibility_title']['#weight'] = 51;
+
+    if ($brt_result != null) {
+        $brt_get_data = unserialize($brt_result->value);
+        $brt_data = $brt_get_data['data'];
+        $brt_form_default = brt_block_data($brt_data);
+        $brt_form['brt_delta'] = array(
+            '#type' => 'hidden',
+            '#default_value' => $brt_data['brt_delta']
+        );
+        $brt_form['brt_block_type'] = array(
+            '#type' => 'hidden',
+            '#default_value' => $brt_data['brt_block_type']
+        );
+        $brt_form['delta'] = array(
+            '#type' => 'hidden',
+            '#default_value' => $brt_data['delta']
+        );
+
+        $brt_block_type = isset($brt_data['brt_block_type']) ? $brt_data['brt_block_type'] : null;
+        if (isset($brt_form_default[$brt_block_type]['form'])) {
+            foreach ($brt_form_default[$brt_block_type]['form'] as $key => $value) {
+                $brt_form[$key] = $value;
+            }
+        }
+    }
+
+    $brt_form['#submit'][] = 'block_admin_configure_submit';
+    $brt_form['#submit'][] = 'brt_block_configure_form_submit';
+
+
+    return $brt_form;
+}
+
+function brt_block_configure_form_validate($form, &$form_state)
+{
+
+}
+
+function brt_block_configure_form_submit($form, &$form_state)
+{
+    $brt_datas = $form_state['values'];
+    $delta = $brt_datas['brt_delta'];
+    $brt_datas['delta'] = $delta;
+    variable_set($delta, array('data' => $brt_datas));
+    drupal_goto('admin/structure/block');
+}
+
+function brt_block_delete($delta = '')
+{
+    $query_block = db_query('SELECT * FROM {block} where delta = :brt_delta LIMIT 1', array(':brt_delta' => $delta));
+    $brt_block = $query_block->fetchObject();
+    $brt_title = $brt_block->title;
+    variable_del($delta);
+    db_delete('block')
+        ->condition('module', 'brt_block')
+        ->condition('delta', $delta)
+        ->execute();
+    db_delete('block_role')
+        ->condition('module', 'brt_block')
+        ->condition('delta', $delta)
+        ->execute();
+
+    drupal_set_message(t('The BRT block :name has been removed.', array(':name' => $brt_title)));
+    cache_clear_all();
+    drupal_goto('admin/structure/block');
+    return;
+}
+
+function brt_block_preprocess_brt_block_list(&$vars)
+{
+    $brt_datas = $vars['brt_datas'];
+    $brt_render = '';;
+    if (count($brt_datas) != 0) {
+        foreach ($brt_datas as $type => $data) {
+            $brt_render .= '<li class="leaf">';
+            if (isset($data['config']['title'])) {
+                $brt_render .= l($data['config']['title'], 'admin/structure/block/brt-blocks/add/' . $type);
+
+            }
+            if (isset($data['config']['description'])) {
+                $brt_render .= '<div class="description">' . $data['config']['description'] . '</div>';
+            }
+            $brt_render .= '</li>';
+        }
+    }
+    $vars['brt_render'] = $brt_render;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function brt_block_block_info()
+{
+    $blocks = array();
+    $result = db_query('SELECT * FROM {variable}');
+
+    foreach ($result as $block) {
+        if (strpos($block->name, 'brt__') !== false && strpos($block->name, '_html_id') === false && strpos($block->name, '_html_classes') === false) {
+            $brt_data = unserialize($block->value);
+            if($brt_data != null) {
+                $brt_delta = isset($brt_data['data']['brt_delta']) ? $brt_data['data']['brt_delta'] : '';
+                $brt_title = isset($brt_data['data']['description']) ? $brt_data['data']['description'] : '';
+                $blocks[$brt_delta]['info'] = 'BRT Block : ' . $brt_title;
+                $blocks[$brt_delta]['cache'] = DRUPAL_NO_CACHE;
+            }
+        }
+    }
+    return $blocks;
+}
+/**
+ * Implements hook_block_view().
+ */
+function brt_block_block_view($delta = '')
+{
+    module_load_include('inc','brt_block','brt_block.func');
+    module_load_include('inc','brt_block','brt_block');
+    $data_default = brt_block_data();
+    $query = db_query('SELECT * FROM {variable} where name = :brt_delta', array(':brt_delta' => $delta));
+    $brt_result = $query->fetchObject();
+    $brt_render = array();
+    $brt_render['js'] = array();
+    $brt_render['css'] = array();
+    $data = array();
+    if ($brt_result != null) {
+        $brt_datas = unserialize($brt_result->value);
+        $brt_data = $brt_datas['data'];
+
+        $brt_type = $brt_data['brt_block_type'];
+        $brt_render = $brt_data;
+
+        $brt_render['js'] = isset($data_default[$brt_type]['js']) ? $data_default[$brt_type]['js'] : array();
+        $brt_render['css'] = isset($data_default[$brt_type]['css']) ? $data_default[$brt_type]['css'] : array();
+        /*if(isset($data_default[$brt_type])) {
+          foreach($data_default[$brt_type]['form'] as $key => $value) {
+            $brt_render[$key] = isset($brt_data[$key]) ? $brt_data[$key] : '';
+          }
+        }*/
+        $theme_list = theme_get_registry();
+        $brt_theme_type =  $brt_type;
+        if (isset($theme_list[$brt_theme_type])) {
+            $brt_content = theme($brt_theme_type, array('brt_block' => $brt_render));
+        } else {
+            $brt_content = '';
+        }
+        $data['subject'] = isset($brt_data['title']) ? $brt_data['title'] : '';
+        $data['content'] = $brt_content;
+        $data['brt_block'] = $brt_render;
+    }
+
+    return $data;
+}
+
+function brt_block_preprocess_block(&$vars, $hook)
+{
+    $block = $vars['elements']['#block'];
+    if ($block->module == 'brt_block') {
+        $vars['brt_block'] = isset($block->brt_block) ? ($block->brt_block) : '';
+        if (isset($vars['brt_block']['js'])) {
+            if (count($vars['brt_block']['js']) != 0) {
+                foreach ($vars['brt_block']['js'] as $key => $brt_js) {
+                    drupal_add_js($brt_js);
+                }
+            }
+        }
+
+        if (isset($vars['brt_block']['css'])) {
+            if (count($vars['brt_block']['css']) != 0) {
+                foreach ($vars['brt_block']['css'] as $key => $brt_css) {
+                    drupal_add_css($brt_css);
+                }
+            }
+        }
+
+        $brt_forms = brt_block_data();
+        $brt_delta = $vars['elements']['#block']->delta;
+
+        foreach ($brt_forms as $key => $form) {
+            if (strpos($brt_delta, $key) !== false) {
+                $vars['theme_hook_suggestions'][] = 'block__brt_block__' . $key;
+                $vars['theme_hook_suggestions'][] = 'block__brt_block__' . $key . '__' . $brt_delta;
+            }
+        }
+    }
+}
+
+function brt_block_js_alter(&$js)
+{
+//  if(((strpos(current_path(),'brt_block') !== false) || ((strpos(current_path(),'brt-blocks') !== false))) && ((strpos(current_path(),'md_slider') !== false))){
+//    $js_remove = array(
+//      'core.min',
+//      'widget.min',
+//      'mouse.min',
+//      'resizable.min',
+//      'draggable.min',
+//      'button.min',
+//      'position.min',
+//      'dialog.min'
+//    );
+//    foreach($js_remove as $key => $value){
+//      $value = 'misc/ui/jquery.ui.'.$value.'.js';
+//      unset($js[$value]);
+//    }
+//  }
+}
+
+function brt_block_library_alter(&$libraries, $module)
+{
+//  if(((strpos(current_path(),'brt_block') !== false) || ((strpos(current_path(),'brt-blocks') !== false))) && ((strpos(current_path(),'md_slider') !== false))){
+//    $libraries['jquery'] = null;
+//    $libraries['jquery']['title'] = 'jQuery';
+//    $libraries['jquery']['website'] = 'http://jquery.com';
+//    $libraries['jquery']['version'] = '1.9';
+//    $libraries['jquery']['js']['misc/jquery.js']['data'] = brt_block_PATH . '/js/jquery-1.9.js';
+//    $libraries['jquery']['js']['misc/jquery.js']['group'] = '-100';
+//    $libraries['jquery']['js']['misc/jquery.js']['weight'] = '-20';
+//  }
+
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function brt_block_form_alter(&$form, &$form_state, $form_id)
+{
+    if ($form_id == 'block_admin_display_form') {
+        foreach ($form['blocks'] as $key => $element) {
+            if ($element['module']['#value'] == 'brt_block') {
+                $form['blocks'][$key]['delete'] = array(
+                    '#type' => 'link',
+                    '#title' => t('delete'),
+                    '#href' => 'admin/structure/block/brt-blocks/delete/' . $element['delta']['#value'],
+                    '#attributes' => array('onclick' => "return confirm('Are you sure you want to delete that block?')")
+                );
+            }
+        }
+    }
+
+}
+
+function brt_block_theme()
+{
+    $brt_theme['brt_block_list'] = array(
+        'template' => 'brt_block_list',
+        'variables' => array('brt_datas' => '', 'brt_render' => ''),
+        'path' => BRT_BLOCK_PATH . '/templates/admin'
+    );
+    /**
+     * load template for admin
+     * *.tpl.php is file template
+     */
+    $brt_load_template_admin = _brt_block_check_template_for_admin();
+    if (count($brt_load_template_admin) != 0) {
+        foreach ($brt_load_template_admin as $key => $value) {
+            $brt_theme[$key] = array(
+                'template' => $value['template'],
+                'variables' => array(''),
+                'path' => $value['path']
+            );
+        }
+    }
+    $brt_theme['solveto_instagram_image'] = array(
+        'variables' => array('height' => NULL, 'width' => NULL, 'src' => NULL, 'href' => NULL, 'post' => NULL),
+        'template' => 'instagram-block-image',
+        'path' => BRT_BLOCK_PATH . '/templates/frontend'
+    );
+
+    /**
+     * load template for front-end
+     */
+    $brt_load_template = _brt_block_check_template();
+    if (count($brt_load_template) != 0) {
+        foreach ($brt_load_template as $key => $value) {
+            $brt_theme[$key] = array(
+                'template' => $value['template'],
+                'variables' => array('brt_block' => ''),
+                'path' => BRT_BLOCK_PATH . '/templates/frontend'
+            );
+        }
+    }
+
+    return $brt_theme;
+}
+
+function _brt_block_check_template()
+{
+    $brt_data = array();
+    $brt_dir = BRT_BLOCK_PATH . '/templates/frontend';
+    $brt_scan_dir = file_scan_directory($brt_dir, '*.*');
+    foreach ($brt_scan_dir as $key => $file) {
+        if ((strpos($key, 'brt-block--') !== false) && (strpos($key, '.tpl.php') !== false)) {
+            if (file_exists($key)) {
+                $brt_arg_1 = explode('.', $file->name);
+                $brt_arg_2 = isset($brt_arg_1[0]) ? explode('--', $brt_arg_1[0]) : null;
+                $brt_type = isset($brt_arg_2[1]) ? str_replace('-', '_', $brt_arg_2[1]) : null;
+                $brt_data[$brt_type]['template'] = isset($brt_arg_1[0]) ? $brt_arg_1[0] : '';
+                $brt_data[$brt_type]['path'] = $key;
+            }
+        }
+    }
+    return $brt_data;
+}
+
+function _brt_block_check_template_for_admin()
+{
+    $brt_data = array();
+    $brt_dir = BRT_BLOCK_PATH . '/templates/admin';
+    $brt_scan_dir = file_scan_directory($brt_dir, '*.*');
+    foreach ($brt_scan_dir as $key => $file) {
+        if ((strpos($key, 'brt-block-admin-') !== false) && (strpos($key, '.tpl.php') !== false)) {
+            if (file_exists($key)) {
+                $brt_arg_1 = explode('.', $file->name);
+                $brt_arg_2 = isset($brt_arg_1[0]) ? explode('--', $brt_arg_1[0]) : null;
+                $brt_type = isset($brt_arg_2[0]) ? str_replace('-', '_', $brt_arg_2[0]) : null;
+                $brt_data[$brt_type]['template'] = isset($brt_arg_1[0]) ? $brt_arg_1[0] : '';
+                $brt_data[$brt_type]['path'] = str_replace($file->filename, '', $key);
+            }
+        }
+        if ((strpos($key, 'us--') !== false) && (strpos($key, '.tpl.php') !== false)) {
+            if (file_exists($key)) {
+                $brt_arg_1 = explode('.', $file->name);
+                $brt_arg_2 = isset($brt_arg_1[0]) ? explode('--', $brt_arg_1[0]) : null;
+                $brt_type = isset($brt_arg_2[0]) ? str_replace('-', '_', $brt_arg_2[0]) : null;
+                $brt_data[str_replace('-', '_', $brt_arg_1[0])]['template'] = isset($brt_arg_1[0]) ? $brt_arg_1[0] : '';
+                $brt_data[str_replace('-', '_', $brt_arg_1[0])]['path'] = str_replace($file->filename, '', $key);
+            }
+        }
+    }
+
+    return $brt_data;
+}
+/**
+ * Get json data from twitter with OAuth library
+ */
+function tweet_content(){
+
+    $consumer_key = $_GET['tck'];
+
+    $consumer_secret = $_GET['tcs'];
+
+    $access_token = $_GET['tat'];
+
+    $secret_token = $_GET['tats'];
+
+    if(empty($consumer_key) || empty($consumer_secret) || empty($access_token) || empty($secret_token)) { die(); }
+    class ezTweet {
+        /*************************************** config ***************************************/
+        public $consumer_key;
+        public $consumer_secret;
+        public $access_token;
+        public $secret_token;
+
+        // Path to tmhOAuth libraries
+        private $lib = './types/twitter/lib/';
+
+        // Enable caching
+        private $cache_enabled = false;
+
+        // Cache interval (minutes)
+        private $cache_interval = 15;
+
+        // Path to writable cache directory
+        private $cache_dir = './types/twitter/cache';
+
+        // Enable debugging
+        private $debug = true;
+
+        /**************************************************************************************/
+
+        public function __construct() {
+            $this->consumer_key = $_GET['tck'];
+            $this->consumer_secret = $_GET['tcs'];
+            $this->access_token = $_GET['tat'];
+            $this->secret_token = $_GET['tats'];
+            // Initialize paths and etc.
+            $this->pathify($this->cache_dir);
+            $this->pathify($this->lib);
+            $this->message = '';
+
+            // Set server-side debug params
+            if($this->debug === true) {
+                error_reporting(-1);
+            } else {
+                error_reporting(0);
+            }
+        }
+
+        public function fetch() {
+            echo json_encode(
+                array(
+                    'response' => json_decode($this->getJSON(), true),
+                    'message' => ($this->debug) ? $this->message : false
+                )
+            );
+
+        }
+
+        private function getJSON() {
+            if($this->cache_enabled === true) {
+                $CFID = $this->generateCFID();
+                $cache_file = $this->cache_dir.$CFID;
+
+                if(file_exists($cache_file) && (filemtime($cache_file) > (time() - 60 * intval($this->cache_interval)))) {
+                    return file_get_contents($cache_file, FILE_USE_INCLUDE_PATH);
+                } else {
+
+                    $JSONraw = $this->getTwitterJSON();
+                    $JSON = $JSONraw['response'];
+
+                    // Don't write a bad cache file if there was a CURL error
+                    if($JSONraw['errno'] != 0) {
+                        $this->consoleDebug($JSONraw['error']);
+                        return $JSON;
+                    }
+
+                    if($this->debug === true) {
+                        // Check for twitter-side errors
+                        $pj = json_decode($JSON, true);
+                        if(isset($pj['errors'])) {
+                            foreach($pj['errors'] as $error) {
+                                $message = 'Twitter Error: "'.$error['message'].'", Error Code #'.$error['code'];
+                                $this->consoleDebug($message);
+                            }
+                            return false;
+                        }
+                    }
+
+                    if(is_writable($this->cache_dir) && $JSONraw) {
+                        if(file_put_contents($cache_file, $JSON, LOCK_EX) === false) {
+                            $this->consoleDebug("Error writing cache file");
+                        }
+                    } else {
+                        $this->consoleDebug("Cache directory is not writable");
+                    }
+                    return $JSON;
+                }
+            } else {
+                $JSONraw = $this->getTwitterJSON();
+
+                if($this->debug === true) {
+                    // Check for CURL errors
+                    if($JSONraw['errno'] != 0) {
+                        $this->consoleDebug($JSONraw['error']);
+                    }
+
+                    // Check for twitter-side errors
+                    $pj = json_decode($JSONraw['response'], true);
+                    if(isset($pj['errors'])) {
+                        foreach($pj['errors'] as $error) {
+                            $message = 'Twitter Error: "'.$error['message'].'", Error Code #'.$error['code'];
+                            $this->consoleDebug($message);
+                        }
+                        return false;
+                    }
+                }
+                return $JSONraw['response'];
+            }
+        }
+
+        private function getTwitterJSON() {
+            $path = drupal_get_path('module','brt_block');
+            include_once($path.'/types/twitter//lib/tmhOAuth.php');
+            include_once($path.'/types/twitter//lib/tmhUtilities.php');
+
+            $tmhOAuth = new tmhOAuth(array(
+                'host'                  => $_POST['request']['host'],
+                'consumer_key'          => $this->consumer_key,
+                'consumer_secret'       => $this->consumer_secret,
+                'user_token'            => $this->access_token,
+                'user_secret'           => $this->secret_token,
+                'curl_ssl_verifypeer'   => false
+            ));
+
+            $url = $_POST['request']['url'];
+            $params = $_POST['request']['parameters'];
+
+            $tmhOAuth->request('GET', $tmhOAuth->url($url), $params);
+            return $tmhOAuth->response;
+        }
+
+        private function generateCFID() {
+            // The unique cached filename ID
+            return md5(serialize($_POST)).'.json';
+        }
+
+        private function pathify(&$path) {
+            // Ensures our user-specified paths are up to snuff
+            $path = realpath($path).'/';
+        }
+
+        private function consoleDebug($message) {
+            if($this->debug === true) {
+                $this->message .= 'tweet.js: '.$message."\n";
+            }
+        }
+    }
+
+    $ezTweet = new ezTweet();
+    $ezTweet->fetch();
+}

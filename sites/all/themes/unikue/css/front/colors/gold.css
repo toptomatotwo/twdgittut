@@ -1,0 +1,260 @@
+/* Define the base color */
+/* Common styles & typography */
+a,
+a:hover,
+a:visited,
+a:active,
+a:focus {
+  color: #c2973c;
+}
+.section-heading:before,
+.section-heading:after,
+.section-heading .tl,
+.section-heading .tr,
+.section-heading .br,
+.section-heading .bl {
+  border-color: #c2973c;
+}
+.sub-heading:after {
+  background-color: #c2973c;
+}
+.comment .comment-links a,
+.button,
+.button:hover,
+.button:visited,
+.button:focus,
+.button:active {
+  border-color: #c2973c;
+  color: #c2973c;
+}
+.button.button-icon-clear:active,
+.button.button-icon-clear.active,
+.active > .button.button-icon-clear {
+  color: #c2973c !important;
+}
+.button:active,
+.button.active,
+.active > .button {
+  background-color: #c2973c;
+}
+.button:not(.button-icon-clear):hover,
+input:focus,
+textarea:focus {
+  -webkit-box-shadow: inset #c2973c 0 0 0 2px;
+  -moz-box-shadow: inset #c2973c 0 0 0 2px;
+  -ms-box-shadow: inset #c2973c 0 0 0 2px;
+  -o-box-shadow: inset #c2973c 0 0 0 2px;
+  box-shadow: inset #c2973c 0 0 0 2px;
+}
+.button-inverted:active {
+  color: #c2973c !important;
+}
+.button-big .icon {
+  border-right-color: #c2973c;
+}
+blockquote {
+  color: #c2973c;
+}
+pre,
+code,
+kbd {
+  background-color: #c2973c;
+}
+input,
+textarea {
+  border-color: #c2973c;
+}
+.colored,
+.colored:hover,
+.colored:visited,
+.colored:focus,
+.colored:active {
+  color: #c2973c !important;
+}
+.coloredbg {
+  background: #c2973c !important;
+}
+/* Navigation */
+.navbar li.active > a > span {
+  border-color: #c2973c;
+}
+.navbar-brand,
+.navbar-brand:hover,
+.navbar-brand:focus,
+.navbar-brand:visited,
+.navbar-brand:active {
+  border-top-color: #c2973c;
+}
+.nav-wrapper-brand,
+.nav-close,
+.nav-close:hover,
+.nav-close:visited,
+.nav-close:active,
+.nav-close:focus {
+  color: #c2973c;
+}
+.nav li:not(.active) > a > span .tl:before,
+.nav li:not(.active) > a > span .tl:after,
+.nav li:not(.active) > a > span .br:before,
+.nav li:not(.active) > a > span .br:after {
+  background-color: #c2973c;
+}
+.nav > li > ul,
+.nav ul ul {
+  border-color: #c2973c;
+}
+.nav ul li > a > span:before {
+  background-color: #c2973c;
+}
+nav li.node:before {
+  border-left-color: #c2973c;
+}
+/* Hero */
+.cover .one,
+.cover .two {
+  border-color: #c2973c;
+}
+.hero-heading:before,
+.hero-heading:after,
+.hero-heading .tl,
+.hero-heading .tr,
+.hero-heading .br,
+.hero-heading .bl {
+  border-color: #c2973c;
+}
+.hero-amp {
+  color: #c2973c;
+}
+.hero-amp:before,
+.hero-amp:after {
+  background-color: #c2973c;
+}
+/* Lists */
+.list li .bullet {
+  border-color: #c2973c;
+}
+/* Comments */
+.datetime {
+  background-color: #c2973c;
+}
+.datetime:before {
+  border-right-color: #c2973c;
+}
+/* Skill bars */
+.skill-bar .bar {
+  border-color: #c2973c;
+}
+.skill-bar .bar:before,
+.skill-bar .bar:after,
+.skill-bar .fill,
+.skill-bar .fill:before,
+.skill-bar .fill:after,
+.skill-bar .value {
+  background-color: #c2973c;
+}
+.skill-bar .value:after {
+  border-top-color: #c2973c;
+}
+/* Footer label */
+.footer-label {
+  color: #c2973c;
+}
+/* History list */
+.history,
+.history .work-edu-icon {
+  border-color: #c2973c;
+}
+.history .work-edu-icon .fa {
+  color: #c2973c;
+}
+/* Portfolio styles */
+.portfolio .item .overlay {
+  background-color: transparent;
+}
+.portfolio .item:hover .overlay {
+  background-color: rgba(194, 151, 60, 0.5);
+}
+.portfolio .item .overlay .tile {
+  background-color: #c2973c;
+}
+/* Blog post styles */
+.blog-post .info,
+.blog-post-small .info,
+.blog-post-big .info {
+  background-color: #c2973c;
+}
+.blog-post .info .arrow,
+.blog-post-small .info .arrow,
+.blog-post-big .info .arrow {
+  border-top-color: #c2973c;
+}
+@media screen and (min-width: 992px) {
+  .blog-post.on-the-left .info .arrow {
+    border-left-color: #c2973c;
+  }
+  .blog-post.on-the-right .info .arrow {
+    border-right-color: #c2973c;
+  }
+}
+/* Expandable section */
+.expandable:before {
+  border-top-color: #c2973c;
+}
+/* Diamond */
+.diamond .background {
+  background-color: #c2973c;
+}
+/* Author */
+.author {
+  background-color: #c2973c;
+}
+/* Iconed */
+.iconed .iconed-icon {
+  color: #c2973c;
+}
+/* Flickr widget */
+.flickr-widget-item a .hover {
+  background-color: #c2973c;
+}
+/* Testimonials */
+.testimonials-box {
+  background-color: #c2973c;
+}
+.testimonials-arrow-left {
+  border-top-color: #c2973c;
+  border-right-color: #c2973c;
+}
+.testimonials-arrow-right {
+  border-top-color: #c2973c;
+  border-left-color: #c2973c;
+}
+a:hover, footer .inner .widget_contact_info li i, .blog-article h1 a:hover, aside ul li:hover a, .blog-article .info ul.shares li:hover i, .dark .services_medium_new i, .dark .services_medium_new a, .dark .services_medium_new h6, .services_medium_new h6 a:hover, .recent_news .news-carousel-item dl .info, .services_medium_box h5 a, .services_medium_box .read_m, .services_medium_left dl dt .icon_wrapper i, .services_medium_left dl dd > a, .services_medium:hover i, .services_small .services_small_container .services_small_icon i, .dark .dynamic_page_header i, .one-staff .social_widget ul li:hover i, .light .services_small dt i, .single_testimonial .content .data h6, .star-rating span, ul.products .product .price, #woocommerce .product .summary .price, .woocommerce .product .summary .price, .right_search i:hover, .swiper-slide.blog-article .content a:hover, .contact_info .social ul li a:hover, .single_testimonial .content span,header .right_search i,.shares li a:hover, .blog-article .info > li i,.services_boxed .icon_wrapper i,.services_boxed .readmore,.portfolio_big_title, .line_under_full .read_1,.dl-horizontal.list dt .circle i,.widget #wp-calendar a,.top_nav .widget ul li a:hover,#portfolio-filter ul li a,.description_left .page_parents li a:hover{
+    color: #c2973c;
+}
+.line_under .line_center,.recent_news .month_div,.skill .prog, .contact_form input[type="submit"],.services_boxed:hover .icon_wrapper i,.services_boxed .readmore:hover,.center-bar .btn-system:hover,footer .tagcloud a:hover, .footer_social_bar, .blog-article dt .date.box, #portfolio-filter ul li.active, #faq-filter ul li:hover, #faq-filter ul li.active, #portfolio-filter ul li:hover, .portfolio-item .link:hover,#blogmasonry .readm:hover, .load_more_pagination .load_new {
+    background: #c2973c;
+}
+nav .menu > li.current-menu-item, nav .menu > li:hover, nav .menu > li.current-menu-parent, nav .menu > li.current_page_ancestor, nav .menu > li.current-menu-ancestor {
+    border-bottom: 4px solid #c2973c;
+}
+.services_boxed .readmore:hover {
+    border: 2px solid #c2973c;
+}
+.accordion .accordion-heading.in_head,.full_testimonials {
+    border-top: 2px solid #c2973c;
+}
+#faq-filter ul li:hover, #faq-filter ul li.active {
+    border-right: 1px solid #c2973c;
+}
+.contact_form input[type="submit"] {
+    border: 2px solid #c2973c !important;
+}
+.contact_form input[type="submit"]:hover {
+    background: #c2973c;
+}
+ul.products li.product:hover,.cart-content .links li {
+    border: 1px solid #c2973c;
+}
+aside ul li:hover, aside #popular_widget dl:hover {
+    border-bottom: 1px solid #c2973c;
+}

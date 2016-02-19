@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<!--
+/**
+ * Cassette Tape UI Prototype (09/2012)
+ * ALPHA build / experimental state, unsupported; use at own risk
+ * Requires CSS3 border-radius + <canvas> support
+ * http://www.schillmania.com/projects/soundmanager2/
+ */
+-->
+<html>
+<head>
+<title>Old Tape</title>
+<meta name="robots" content="noindex" />
+<meta name="description" content="An experimental HTML and CSS-based web audio player featuring designs based on the TDK MA-R90 cassette tape, a classic metal-alloy cassette model from 1982, and others" />
+<meta name="keywords" content="javascript sound, html5 audio, css3, cassette tape, tdk, mar, ma-r, mar90, html5 sound, javascript audio, schill, schillmania, soundmanager, soundmanager2" />
+<meta name="author" content="Scott Schiller" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/cassette-tape-ui.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="css/demo.css" />
+<script src="../../script/soundmanager2.js"></script>
+<script src="script/cassette-tape-ui.js"></script>
+</head>
+<body id="page-more">
+
+<div id="content">
+
+ <div id="demo-header-wrapper" class="visible light">
+
+  <div id="demo-header">
+   <h1>Cassette Tape UI</h1>
+   <!-- <p>An exercise in skeuomorphic excess. <a href="./" title="More cassette tape prototype designs">main &rarrlp;</a></p> -->
+  </div>
+
+ </div>
+
+ <div id="col1" class="demo-subheader">
+
+  
+ <div id="col2" class="demo-subheader">
+<!--
+  <h2 id="demo">Live Demo</h2>
+
+  <p>Here are some cassette tape UI skin/theme variants; the styling is a mix of HTML elements and class names.</p>
+
+  <p style="font-size:small"><b style="font-weight:bold">Disclaimer</b>: This UI is a prototype, experimental and subject to change. It is not officially "supported" as a demo, and requires a fairly-modern browser that supports CSS3 and &lt;canvas&gt;. It does not degrade gracefully in older browsers. Use at your own risk.</p>
+-->
+  <div class="cutout clear texture ma-r90 tape">
+   <div class="rail-left"></div>
+   <div class="rail-right"></div>
+   <div class="rail-middle">
+    <div class="rail-middle-outline"></div>
+   </div>
+   <div class="left reel-mask"></div>
+   <div class="right reel-mask"></div>
+   <canvas class="connecting-tape"></canvas>
+   <div class="left reel"></div>
+   <div class="left spokes"></div>
+   <div class="right reel"></div>
+   <div class="right spokes"></div>
+   <div class="progress-notches">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="n3"></div>
+    <div class="n4"></div>
+    <div class="n5"></div>
+    <div class="n6"></div>
+    <div class="n7"></div>
+    <div class="n8"></div>
+    <div class="n9"></div>
+   </div>
+   <div class="label">Tape Hiss</div>
+   <div class="aqua controls">
+    <div class="bd">
+     <ul>
+      <li><a href="#" title="play/pause" class="play">&#9668;</a></li>
+      <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+      <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+      <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+  <div class="clear black-micro dark cutout texture tape">
+   <div class="rail-left"></div>
+   <div class="rail-right"></div>
+   <div class="rail-middle">
+    <div class="rail-middle-outline" style="border:none;background-color:transparent">
+     <div class="hole-1"></div>
+     <div class="hole-2"></div>
+     <div class="hole-3"></div>
+     <div class="hole-4"></div>
+     <div class="tape-pad-holder">
+      <div class="tape-pad"></div>
+      <div class="tape-pad-line"></div>
+     </div>
+    </div>
+    <div class="screw-bm"></div>
+   </div>
+   <div class="screw-tl"></div>
+   <div class="screw-tr"></div>
+   <div class="screw-bl"></div>
+   <div class="screw-br"></div>
+   <div class="screw-tm"></div>
+   <div class="left reel-mask"></div>
+   <div class="right reel-mask"></div>
+   <canvas class="connecting-tape"></canvas>
+   <div class="left reel"></div>
+   <div class="left spokes"></div>
+   <div class="right reel"></div>
+   <div class="right spokes"></div>
+   <div class="progress-notches">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="n3"></div>
+    <div class="n4"></div>
+    <div class="n5"></div>
+    <div class="n6"></div>
+    <div class="n7"></div>
+    <div class="n8"></div>
+    <div class="n9"></div>
+   </div>
+   <div class="label">WK Mixtape</div>
+   <div class="controls">
+    <div class="bd">
+     <ul>
+      <li><a href="#" title="play/pause" class="play">&#9668;</a></li>
+      <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+      <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+      <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+  <div class="clear texture cutout tape">
+   <div class="rail-left"></div>
+   <div class="rail-right"></div>
+   <div class="rail-middle">
+    <div class="rail-middle-outline">
+     <div class="hole-1"></div>
+     <div class="hole-2"></div>
+     <div class="hole-3"></div>
+     <div class="hole-4"></div>
+     <div class="tape-pad-holder">
+      <div class="tape-pad"></div>
+      <div class="tape-pad-line"></div>
+     </div>
+    </div>
+    <div class="screw-bm"></div>
+   </div>
+   <div class="screw-tl"></div>
+   <div class="screw-tr"></div>
+   <div class="screw-bl"></div>
+   <div class="screw-br"></div>
+   <div class="screw-tm"></div>
+   <div class="left reel-mask"></div>
+   <div class="right reel-mask"></div>
+   <canvas class="connecting-tape"></canvas>
+   <div class="left reel"></div>
+   <div class="left spokes"></div>
+   <div class="right reel"></div>
+   <div class="right spokes"></div>
+   <div class="progress-notches">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="n3"></div>
+    <div class="n4"></div>
+    <div class="n5"></div>
+    <div class="n6"></div>
+    <div class="n7"></div>
+    <div class="n8"></div>
+    <div class="n9"></div>
+   </div>
+   <div class="label">Old Noise</div>
+   <div class="controls">
+    <div class="bd">
+     <ul>
+      <li><a href="#" title="play/pause" class="play">&#9668;</a></li>
+      <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+      <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+      <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+  <div id="tape1-x" class="clear tape">
+   <div class="window"></div>
+   <div class="rail-left"></div>
+   <div class="rail-right"></div>
+   <div class="rail-middle">
+    <div class="rail-middle-outline">
+     <div class="hole-1"></div>
+     <div class="hole-2"></div>
+     <div class="hole-3"></div>
+     <div class="hole-4"></div>
+     <div class="tape-pad-holder">
+      <div class="tape-pad"></div>
+      <div class="tape-pad-line"></div>
+     </div>
+    </div>
+    <div class="screw-bm"></div>
+   </div>
+   <div class="screw-tl"></div>
+   <div class="screw-tr"></div>
+   <div class="screw-bl"></div>
+   <div class="screw-br"></div>
+   <div class="left reel"></div>
+   <div class="left spokes"></div>
+   <div class="right reel"></div>
+   <div class="right spokes">
+   </div>
+   <canvas class="connecting-tape"></canvas>
+   <div class="left tape-guide"></div>
+   <div class="right tape-guide"></div>
+   <div class="progress-notches">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="n3"></div>
+    <div class="n4"></div>
+    <div class="n5"></div>
+    <div class="n6"></div>
+    <div class="n7"></div>
+    <div class="n8"></div>
+    <div class="n9"></div>
+   </div>
+   <div class="label"></div>
+   <div class="controls">
+    <div class="bd">
+     <ul>
+      <li><a href="#" title="play/pause" class="play">&#9668;</a></li>
+      <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+      <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+      <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+  <div class="clear blue color texture tape">
+   <div class="window"></div>
+   <div class="rail-left"></div>
+   <div class="rail-right"></div>
+   <div class="rail-middle">
+    <div class="rail-middle-outline">
+     <div class="hole-1"></div>
+     <div class="hole-2"></div>
+     <div class="hole-3"></div>
+     <div class="hole-4"></div>
+     <div class="tape-pad-holder">
+     <div class="tape-pad"></div>
+     <div class="tape-pad-line"></div>
+    </div>
+   </div>
+   <div class="screw-bm"></div>
+   </div>
+   <div class="screw-tl"></div>
+   <div class="screw-tr"></div>
+   <div class="screw-bl"></div>
+   <div class="screw-br"></div>
+   <div class="left reel"></div>
+   <div class="left spokes">
+   </div>
+   <div class="right reel"></div>
+   <div class="right spokes">
+   </div>
+   <canvas class="connecting-tape"></canvas>
+   <div class="left tape-guide"></div>
+   <div class="right tape-guide"></div>
+   <div class="progress-notches">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="n3"></div>
+    <div class="n4"></div>
+    <div class="n5"></div>
+    <div class="n6"></div>
+    <div class="n7"></div>
+    <div class="n8"></div>
+    <div class="n9"></div>
+   </div>
+   <div class="label"></div>
+   <div class="controls">
+    <div class="bd">
+     <ul>
+      <li><a href="#" title="play/pause" class="play">&#9668;</a></li>
+      <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+      <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+      <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+  <div class="black-micro dark clear texture tape">
+   <div class="rail-left"></div>
+   <div class="rail-right"></div>
+   <div class="rail-middle">
+    <div class="rail-middle-outline" style="border:none;background-color:transparent">
+     <div class="hole-1"></div>
+     <div class="hole-2"></div>
+     <div class="hole-3"></div>
+     <div class="hole-4"></div>
+     <div class="tape-pad-holder">
+      <div class="tape-pad"></div>
+      <div class="tape-pad-line"></div>
+     </div>
+    </div>
+    <div class="screw-bm"></div>
+   </div>
+   <div class="screw-tl"></div>
+   <div class="screw-tr"></div>
+   <div class="screw-bl"></div>
+   <div class="screw-br"></div>
+   <div class="screw-tm"></div>
+   <div class="left reel"></div>
+   <div class="left spokes"></div>
+   <div class="right reel"></div>
+   <div class="right spokes"></div>
+   <div class="progress-notches">
+    <div class="n1"></div>
+    <div class="n2"></div>
+    <div class="n3"></div>
+    <div class="n4"></div>
+    <div class="n5"></div>
+    <div class="n6"></div>
+    <div class="n7"></div>
+    <div class="n8"></div>
+    <div class="n9"></div>
+   </div>
+   <!--
+    <div class="label"></div>
+   -->
+   <div class="controls">
+    <div class="bd">
+     <ul>
+      <li><a href="#" title="play/pause" class="play">&#9668;</a></li>
+      <li><a href="#" title="rewind" class="rew">&#171;</a></li>
+      <li><a href="#" title="fast-forward" class="ffwd">&#187;</a></li>
+      <li><a href="#" title="stop" class="stop">&#9632;</a></li>
+     </ul>
+    </div>
+   </div>
+  </div>
+
+ </div>
+
+
+
+</body>

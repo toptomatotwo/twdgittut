@@ -1,0 +1,28 @@
+
+.panel-two-sidebar {
+     /*  overflow: hidden;  */
+ }
+
+.panel-two-sidebar .panel-sidebar-1 {
+    float: left;
+    width: 25%;
+}
+.panel-two-sidebar .panel-sidebar-2 {
+    float: right;
+    width: 25%;
+}
+.panel-two-sidebar .panel-content {
+    float: left;
+    width: 50%;
+}
+
+.panel-two-sidebar .panel-sidebar .inside {
+    margin: 0 .5em 1em 0;
+}
+.panel-two-sidebar .panel-content .inside {
+    margin: 0 .5em 1em 0;
+}
+
+.panel-two-sidebar .panel-separator {
+    margin: 0 0 1em 0;
+}

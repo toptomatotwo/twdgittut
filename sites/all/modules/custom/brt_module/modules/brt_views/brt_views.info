@@ -1,0 +1,15 @@
+name = BRT Views Module
+core = 7.x
+package = BRT
+description = BRT Views Module
+
+dependencies[] = views
+
+files[] = plugins/brt_animate_style.inc
+files[] = plugins/brt_responsive_grid_style.inc
+files[] = plugins/brt_views_animate_plugin_row.inc
+files[] = plugins/brt_views_plugin_blog_pager.inc
+
+version = "7.x-1.0"
+core = "7.x"
+project = "brt_views"

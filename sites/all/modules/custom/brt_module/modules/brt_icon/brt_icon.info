@@ -1,0 +1,6 @@
+name = BRT Icon Module
+description = Define icon packages for Berathemes themes
+core = 7.x
+dependencies[] = icon
+version = 7.x-1.0
+package = BRT

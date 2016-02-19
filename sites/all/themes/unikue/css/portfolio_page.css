@@ -1,0 +1,22 @@
+/* line 1, ../sass/portfolio_page.scss */
+h1.portfolio-page-title, h1.portfolio-page-title:hover {
+  text-align: left;
+  color: #777;
+  margin-left: 0;
+  margin-top: 0;
+}
+
+/* line 9, ../sass/portfolio_page.scss */
+p.website-link a {
+  /* color:$lexWebDevOrange; */
+  color: #ec643e;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* line 15, ../sass/portfolio_page.scss */
+p.website-link a:hover {
+  color: red;
+  font-weight: 500;
+  text-decoration: underline;
+}

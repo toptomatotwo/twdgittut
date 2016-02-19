@@ -1,0 +1,25 @@
+
+.panel-1col {
+    /*  overflow: hidden;  */
+}
+
+.panel-1col .panel-col-first .inside {
+    margin: 0 .5em 1em 0;
+}
+
+.panel-1col .panel-col {
+    float: left;
+    width: 100%;
+}
+
+.panel-1col .panel-col .inside {
+    margin: 0 .5em 1em .5em;
+}
+
+.panel-1col .panel-col-last .inside {
+    margin: 0 0 1em .5em;
+}
+
+.panel-1col .panel-separator {
+    margin: 0 0 1em 0;
+}

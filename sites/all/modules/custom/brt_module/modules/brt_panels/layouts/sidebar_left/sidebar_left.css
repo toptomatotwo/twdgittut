@@ -1,0 +1,28 @@
+
+.panel-sidebar-left {
+     /*  overflow: hidden;  */
+ }
+
+.panel-sidebar-left .panel-sidebar {
+    float: left;
+    width: 33%;
+}
+
+.panel-sidebar-left .panel-sidebar .inside {
+    margin: 0 .5em 1em 0;
+}
+.panel-sidebar-left .panel-content .inside {
+    margin: 0 .5em 1em .5em;
+}
+
+.panel-sidebar-left .panel-content {
+    float: left;
+    width: 66%;
+}
+.panel-sidebar-left .panel-content .inside {
+    margin: 0 0 1em .5em;
+}
+
+.panel-sidebar-left .panel-separator {
+    margin: 0 0 1em 0;
+}

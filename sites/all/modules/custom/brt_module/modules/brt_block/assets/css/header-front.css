@@ -1,0 +1,82 @@
+.top_nav .cart {
+    position: relative;
+    z-index: 33;
+}
+ul.menu li.leaf,ul.menu li.expanded  {
+    list-style: none;
+}
+
+ul.menu li {
+    margin: 0;
+}
+body.admin-menu header#header.fixed_header {
+    margin-top: 29px;
+}
+body.toolbar header#header.fixed_header {
+    margin-top: 30px;
+}
+body.toolbar.toolbar-drawer header#header.fixed_header {
+    margin-top: 65px;
+}
+.right_search_container .form-actions {
+    display: none;
+}
+.header_3 .header_bar {
+    background: #fff;
+    color: #555;
+}
+.header_3 .header_bar h3,.header_3 .header_bar .socials li i {
+    color: #555;
+}
+.header_2 .header_bar .socials li i {
+    color: #fff;
+}
+.header_bar .socials {
+    list-style: none;
+}
+.header_bar .socials li {
+    display: inline;
+    padding-right: 20px;
+}
+.header_bar .socials li a {
+    font-size: 20px;
+}
+.header_3 nav .menu > li.current_page_item,
+.header_3 nav .menu > li:hover,
+.header_3 nav .menu > li.current-menu-parent,
+.header_3_body nav .menu > li.current-menu-ancestor{
+    background: #444;
+}
+.header_3 nav .menu > li > a {
+    color: #f6f6f6;
+}
+.top-page .top_nav .sub-loggin {
+    padding-bottom: 0;
+    margin-top: 0;
+}
+.top_nav_sub.login .item-list,.top_nav_sub.login .form-item {
+    display: block;
+    width: 100%;
+    float: left;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.top_nav_sub.login .item-list a {
+    display: block;
+}
+.top_nav_sub.login .form-actions {
+    border: none;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding: 0;
+}
+.top-page .top_nav_sub.login input.form-submit {
+    height: 26px;
+    line-height: 20px;
+}
+.top_nav .socials {
+    margin-top: 0 !important;
+}
+.top_nav .socials li {
+    width: 40px;
+}

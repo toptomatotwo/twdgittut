@@ -1,0 +1,10 @@
+name = BRT Block
+description = Custom block type
+
+dependencies[] = block
+files[] = brt_block.theme.inc
+
+core = 7.x
+version = 7.x-1.0
+package = BRT
+

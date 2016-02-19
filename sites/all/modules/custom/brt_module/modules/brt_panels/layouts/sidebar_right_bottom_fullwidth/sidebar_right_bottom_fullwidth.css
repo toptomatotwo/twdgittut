@@ -1,0 +1,27 @@
+
+.panel-sidebar-right-bottom-fullwidth {
+    /*  overflow: hidden;  */
+}
+.panel-row,
+.panel-bottom {
+    width: 100%;
+}
+.panel-row {
+    margin-bottom: 20px;
+}
+.panel-sidebar-right-bottom-fullwidth .panel-sidebar {
+    float: left;
+    width: 31.5%;
+    margin: 0 0 1em 1em;
+
+}
+
+.panel-sidebar-right-bottom-fullwidth .panel-content {
+    float: left;
+    width: 66.667%;
+    margin: 0 .5em 1em 0;
+}
+
+.panel-sidebar-right-bottom-fullwidth .panel-separator {
+    margin: 0 0 1em 0;
+}

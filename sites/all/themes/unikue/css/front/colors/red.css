@@ -1,0 +1,259 @@
+/* Define the base color */
+/* Common styles & typography */
+a,
+a:hover,
+a:visited,
+a:active,
+a:focus {
+  color: #c75233;
+}
+.section-heading:before,
+.section-heading:after,
+.section-heading .tl,
+.section-heading .tr,
+.section-heading .br,
+.section-heading .bl {
+  border-color: #c75233;
+}
+.sub-heading:after {
+  background-color: #c75233;
+}
+.button,
+.button:hover,
+.button:visited,
+.button:focus,
+.button:active {
+  border-color: #c75233;
+  color: #c75233;
+}
+.button.button-icon-clear:active,
+.button.button-icon-clear.active,
+.active > .button.button-icon-clear {
+  color: #c75233 !important;
+}
+.button:active,
+.button.active,
+.active > .button {
+  background-color: #c75233;
+}
+.button:not(.button-icon-clear):hover,
+input:focus,
+textarea:focus {
+  -webkit-box-shadow: inset #c75233 0 0 0 2px;
+  -moz-box-shadow: inset #c75233 0 0 0 2px;
+  -ms-box-shadow: inset #c75233 0 0 0 2px;
+  -o-box-shadow: inset #c75233 0 0 0 2px;
+  box-shadow: inset #c75233 0 0 0 2px;
+}
+.button-inverted:active {
+  color: #c75233 !important;
+}
+.button-big .icon {
+  border-right-color: #c75233;
+}
+blockquote {
+  color: #c75233;
+}
+pre,
+code,
+kbd {
+  background-color: #c75233;
+}
+input,
+textarea {
+  border-color: #c75233;
+}
+.colored,
+.colored:hover,
+.colored:visited,
+.colored:focus,
+.colored:active {
+  color: #c75233 !important;
+}
+.coloredbg {
+  background: #c75233 !important;
+}
+/* Navigation */
+.navbar li.active > a > span {
+  border-color: #c75233;
+}
+.navbar-brand,
+.navbar-brand:hover,
+.navbar-brand:focus,
+.navbar-brand:visited,
+.navbar-brand:active {
+  border-top-color: #c75233;
+}
+.nav-wrapper-brand,
+.nav-close,
+.nav-close:hover,
+.nav-close:visited,
+.nav-close:active,
+.nav-close:focus {
+  color: #c75233;
+}
+.nav li:not(.active) > a > span .tl:before,
+.nav li:not(.active) > a > span .tl:after,
+.nav li:not(.active) > a > span .br:before,
+.nav li:not(.active) > a > span .br:after {
+  background-color: #c75233;
+}
+.nav > li > ul,
+.nav ul ul {
+  border-color: #c75233;
+}
+.nav ul li > a > span:before {
+  background-color: #c75233;
+}
+nav li.node:before {
+  border-left-color: #c75233;
+}
+/* Hero */
+.cover .one,
+.cover .two {
+  border-color: #c75233;
+}
+.hero-heading:before,
+.hero-heading:after,
+.hero-heading .tl,
+.hero-heading .tr,
+.hero-heading .br,
+.hero-heading .bl {
+  border-color: #c75233;
+}
+.hero-amp {
+  color: #c75233;
+}
+.hero-amp:before,
+.hero-amp:after {
+  background-color: #c75233;
+}
+/* Lists */
+.list li .bullet {
+  border-color: #c75233;
+}
+/* Comments */
+.datetime {
+  background-color: #c75233;
+}
+.datetime:before {
+  border-right-color: #c75233;
+}
+/* Skill bars */
+.skill-bar .bar {
+  border-color: #c75233;
+}
+.skill-bar .bar:before,
+.skill-bar .bar:after,
+.skill-bar .fill,
+.skill-bar .fill:before,
+.skill-bar .fill:after,
+.skill-bar .value {
+  background-color: #c75233;
+}
+.skill-bar .value:after {
+  border-top-color: #c75233;
+}
+/* Footer label */
+.footer-label {
+  color: #c75233;
+}
+/* History list */
+.history,
+.history .work-edu-icon {
+  border-color: #c75233;
+}
+.history .work-edu-icon .fa {
+  color: #c75233;
+}
+/* Portfolio styles */
+.portfolio .item .overlay {
+  background-color: transparent;
+}
+.portfolio .item:hover .overlay {
+  background-color: rgba(199, 82, 51, 0.5);
+}
+.portfolio .item .overlay .tile {
+  background-color: #c75233;
+}
+/* Blog post styles */
+.blog-post .info,
+.blog-post-small .info,
+.blog-post-big .info {
+  background-color: #c75233;
+}
+.blog-post .info .arrow,
+.blog-post-small .info .arrow,
+.blog-post-big .info .arrow {
+  border-top-color: #c75233;
+}
+@media screen and (min-width: 992px) {
+  .blog-post.on-the-left .info .arrow {
+    border-left-color: #c75233;
+  }
+  .blog-post.on-the-right .info .arrow {
+    border-right-color: #c75233;
+  }
+}
+/* Expandable section */
+.expandable:before {
+  border-top-color: #c75233;
+}
+/* Diamond */
+.diamond .background {
+  background-color: #c75233;
+}
+/* Author */
+.author {
+  background-color: #c75233;
+}
+/* Iconed */
+.iconed .iconed-icon {
+  color: #c75233;
+}
+/* Flickr widget */
+.flickr-widget-item a .hover {
+  background-color: #c75233;
+}
+/* Testimonials */
+.testimonials-box {
+  background-color: #c75233;
+}
+.testimonials-arrow-left {
+  border-top-color: #c75233;
+  border-right-color: #c75233;
+}
+.testimonials-arrow-right {
+  border-top-color: #c75233;
+  border-left-color: #c75233;
+}
+a:hover, footer .inner .widget_contact_info li i, .blog-article h1 a:hover, aside ul li:hover a, .blog-article .info ul.shares li:hover i, .dark .services_medium_new i, .dark .services_medium_new a, .dark .services_medium_new h6, .services_medium_new h6 a:hover, .recent_news .news-carousel-item dl .info, .services_medium_box h5 a, .services_medium_box .read_m, .services_medium_left dl dt .icon_wrapper i, .services_medium_left dl dd > a, .services_medium:hover i, .services_small .services_small_container .services_small_icon i, .dark .dynamic_page_header i, .one-staff .social_widget ul li:hover i, .light .services_small dt i, .single_testimonial .content .data h6, .star-rating span, ul.products .product .price, #woocommerce .product .summary .price, .woocommerce .product .summary .price, .right_search i:hover, .swiper-slide.blog-article .content a:hover, .contact_info .social ul li a:hover, .single_testimonial .content span,header .right_search i,.shares li a:hover, .blog-article .info > li i,.services_boxed .icon_wrapper i,.services_boxed .readmore,.portfolio_big_title, .line_under_full .read_1,.dl-horizontal.list dt .circle i,.widget #wp-calendar a,.top_nav .widget ul li a:hover,#portfolio-filter ul li a,.description_left .page_parents li a:hover{
+    color: #c75233;
+}
+.line_under .line_center,.recent_news .month_div,.skill .prog, .contact_form input[type="submit"],.services_boxed:hover .icon_wrapper i,.services_boxed .readmore:hover,.center-bar .btn-system:hover,footer .tagcloud a:hover, .footer_social_bar, .blog-article dt .date.box, #portfolio-filter ul li.active, #faq-filter ul li:hover, #faq-filter ul li.active, #portfolio-filter ul li:hover, .portfolio-item .link:hover,#blogmasonry .readm:hover, .load_more_pagination .load_new {
+    background: #c75233;
+}
+nav .menu > li.current-menu-item, nav .menu > li:hover, nav .menu > li.current-menu-parent, nav .menu > li.current_page_ancestor, nav .menu > li.current-menu-ancestor {
+    border-bottom: 4px solid #c75233;
+}
+.services_boxed .readmore:hover {
+    border: 2px solid #c75233;
+}
+.accordion .accordion-heading.in_head,.full_testimonials {
+    border-top: 2px solid #c75233;
+}
+#faq-filter ul li:hover, #faq-filter ul li.active {
+    border-right: 1px solid #c75233;
+}
+.contact_form input[type="submit"] {
+    border: 2px solid #c75233 !important;
+}
+.contact_form input[type="submit"]:hover {
+    background: #c75233;
+}
+ul.products li.product:hover,.cart-content .links li {
+    border: 1px solid #c75233;
+}
+aside ul li:hover, aside #popular_widget dl:hover {
+    border-bottom: 1px solid #c75233;
+}

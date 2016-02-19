@@ -1,0 +1,73 @@
+name = Unikue One-Page Theme
+description = Drupal Theme
+core = 7.x
+engine = phptemplate
+
+settings[toggle_logo] = 1
+settings[toggle_name] = 1
+settings[toggle_slogan] = 1
+settings[toggle_node_user_picture] = 1
+settings[toggle_comment_user_picture] = 1
+settings[toggle_comment_user_verification] = 1
+settings[toggle_favicon] = 1
+settings[toggle_main_menu] = 1
+settings[toggle_secondary_menu] = 1
+settings[default_logo] = 1
+settings[default_favicon] = 1
+settings[toggle_fvicon] = 1
+settings[css3_textarea] = 0
+settings[webclip_precomp] = 1
+
+settings[enable_dot_navigation] = 1
+settings[footer_text] = 6ixfire | Truly premium Drupal Theme
+
+stylesheets[all][] = css/additional.css
+stylesheets[all][] = css/typography.css
+stylesheets[all][] = css/icomoon.css
+
+; Important Drupal regions
+regions[navigation]     = Navigation
+regions[header]     = Header
+regions[sidebar_first] = Sidebar First
+regions[content] = System Content
+regions[frontpage_content] = Frontpage Content
+regions[sidebar_second] = Sidebar Second
+regions[footer] = Footer
+
+; CSS
+; --------------
+exclude[css][] = 'misc/vertical-tabs.css'
+exclude[css][] = 'modules/aggregator/aggregator.css'
+; Necessary administrative block CSS.
+;exclude[css][] = 'modules/block/block.css'
+;exclude[css][] = 'modules/book/book.css'
+;exclude[css][] = 'modules/comment/comment.css'
+;exclude[css][] = 'modules/dblog/dblog.css'
+;exclude[css][] = 'modules/file/file.css'
+;exclude[css][] = 'modules/filter/filter.css'
+;exclude[css][] = 'modules/forum/forum.css'
+;exclude[css][] = 'modules/help/help.css'
+;exclude[css][] = 'modules/menu/menu.css'
+;exclude[css][] = 'modules/node/node.css'
+;exclude[css][] = 'modules/openid/openid.css'
+;exclude[css][] = 'modules/poll/poll.css'
+;exclude[css][] = 'modules/search/search.css'
+;exclude[css][] = 'modules/statistics/statistics.css'
+;exclude[css][] = 'modules/syslog/syslog.css'
+;exclude[css][] = 'modules/system/maintenance.css'
+;exclude[css][] = 'modules/system/system.maintenance.css'
+;exclude[css][] = 'modules/system/system.menus.css'
+;exclude[css][] = 'modules/system/system.messages.css'
+;exclude[css][] = 'modules/system/system.theme.css'
+;exclude[css][] = 'modules/taxonomy/taxonomy.css'
+;exclude[css][] = 'modules/tracker/tracker.css'
+;exclude[css][] = 'modules/update/update.css'
+;exclude[css][] = 'modules/user/user.css'
+;exclude[css][] = 'modules/system/admin.css'
+;exclude[css][] = 'modules/system/system.css'
+;exclude[css][] = 'modules/system/system.admin.css'
+;exclude[css][] = 'modules/system/system.base.css'
+
+version = "7.x-1.0"
+core = "7.x"
+project = "unikue"
